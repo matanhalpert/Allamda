@@ -1,10 +1,6 @@
-<p align="center">
-  <img src="src/app/static/images/intro_logo.png" alt="Allamda Logo" width="400">
-</p>
+![Allamda Logo](src/app/static/images/intro_logo.png)
 
-<p align="center">
-  <strong>An AI-Driven Educational Platform Exploring Adaptive, Personalized Learning</strong>
-</p>
+**An AI-Driven Educational Platform Exploring Adaptive, Personalized Learning**
 
 ---
 
