@@ -1,0 +1,100 @@
+{#
+    Reusable component for displaying course progress - Modern Design
+    
+    Required context variables:
+    - courses: List of course dictionaries with progress information
+    - show_count: (optional) Whether to show course count badge (default: true)
+    - title: (optional) Custom title for the section
+#}
+
+{% if courses %}
+<div class="courses-grid-modern">
+    {% for course in courses %}
+    <a href="/course/{{ course.id }}{% if student_id %}?student_id={{ student_id }}{% endif %}" class="modern-course-card">
+        <!-- Course Header with Icon -->
+        <div class="course-card-header">
+            <div class="course-icon-large 
+                {% if 'math' in course.subject_name.lower() %}course-icon-math
+                {% elif 'science' in course.subject_name.lower() or 'biology' in course.subject_name.lower() or 'physics' in course.subject_name.lower() or 'chemistry' in course.subject_name.lower() %}course-icon-science
+                {% elif 'english' in course.subject_name.lower() or 'literature' in course.subject_name.lower() %}course-icon-english
+                {% elif 'history' in course.subject_name.lower() or 'social' in course.subject_name.lower() %}course-icon-history
+                {% else %}course-icon-default{% endif %}">
+                <i class="fas 
+                    {% if 'math' in course.subject_name.lower() %}fa-calculator
+                    {% elif 'science' in course.subject_name.lower() %}fa-flask
+                    {% elif 'biology' in course.subject_name.lower() %}fa-dna
+                    {% elif 'physics' in course.subject_name.lower() %}fa-atom
+                    {% elif 'chemistry' in course.subject_name.lower() %}fa-vial
+                    {% elif 'english' in course.subject_name.lower() %}fa-pen-fancy
+                    {% elif 'literature' in course.subject_name.lower() %}fa-book
+                    {% elif 'history' in course.subject_name.lower() %}fa-landmark
+                    {% elif 'social' in course.subject_name.lower() %}fa-globe
+                    {% elif 'computer' in course.subject_name.lower() %}fa-laptop-code
+                    {% elif 'art' in course.subject_name.lower() %}fa-palette
+                    {% elif 'music' in course.subject_name.lower() %}fa-music
+                    {% else %}fa-book-open{% endif %}">
+                </i>
+            </div>
+            <div class="course-header-content">
+                <h4 class="course-name-modern">{{ course.name }}</h4>
+                <span class="course-subject-tag">
+                    <i class="fas fa-tag"></i>
+                    {{ course.subject_name.replace('_', ' ').title() }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Course Meta -->
+        <div class="course-meta-modern">
+            <span class="meta-badge type-badge">
+                <i class="fas fa-bookmark"></i>
+                {{ course.type.replace('_', ' ').title() }}
+            </span>
+            <span class="meta-badge grade-badge">
+                <i class="fas fa-layer-group"></i>
+                Grade {{ course.grade_level }}
+            </span>
+            {% if course.level %}
+            <span class="meta-badge level-badge">
+                <i class="fas fa-signal"></i>
+                Level {{ course.level }}
+            </span>
+            {% endif %}
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="modern-progress-container">
+            <div class="progress-header">
+                <span class="progress-label-modern">
+                    <i class="fas fa-chart-line"></i>
+                    Progress
+                </span>
+                <span class="progress-percentage">{{ course.progress }}%</span>
+            </div>
+            <div class="progress-bar-modern">
+                <div class="progress-fill 
+                    {% if course.progress >= 80 %}progress-high
+                    {% elif course.progress <= 20 %}progress-low
+                    {% else %}progress-medium{% endif %}" 
+                    style="width: {{ course.progress }}%">
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state-modern">
+    <div class="empty-state-icon">
+        <i class="fas fa-book-open"></i>
+    </div>
+    <div class="empty-state-title">No Courses Found</div>
+    <p class="empty-state-text">
+        {% if selected_subject %}
+            No courses found for {{ selected_subject.replace('_', ' ').title() }}.
+        {% else %}
+            You are not enrolled in any courses yet.
+        {% endif %}
+    </p>
+</div>
+{% endif %}

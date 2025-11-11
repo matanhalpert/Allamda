@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% from "components/progress_indicator.html" import step_progress %}
+
+{% block title %}Start Study Session - Step 2 - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/study-creation.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">Start a Study Session</h1>
+            <p class="welcome-subtitle">
+                Choose your course and learning units - Step 2 of 3
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-book-reader"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+    
+    <!-- Course Selection Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-book me-2"></i>Select Course & Learning Units
+            </h3>
+            <span class="badge bg-primary study-step-badge">
+                Step 2 of 3
+            </span>
+        </div>
+        
+        <form method="POST" action="/study/new/course" id="courseForm">
+            <!-- Course Selection -->
+            <div class="mb-4">
+                <label for="course_id" class="form-label fw-bold study-creation-label">
+                    <i class="fas fa-graduation-cap me-2"></i>Which course do you want to study?
+                </label>
+                <select name="course_id" id="course_id" class="form-select form-select-lg study-creation-select" required>
+                    <option value="">Select a course...</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}" {% if selected_course_id == course.id %}selected{% endif %}>
+                        {{ course.name }} ({{ course.subject_name.replace('_', ' ').title() }})
+                    </option>
+                    {% endfor %}
+                </select>
+                <div class="study-hint-text">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Select the course you want to focus on during this study session.</span>
+                </div>
+            </div>
+
+            <!-- Learning Units Selection -->
+            <div class="mb-4">
+                <label for="learning_units" class="form-label fw-bold study-creation-label">
+                    <i class="fas fa-list-ul me-2"></i>Which learning units do you want to focus on?
+                </label>
+                <div id="learning-units-container" class="study-units-container">
+                    <div class="alert study-info-box mb-0">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="info-icon">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div>
+                                <strong class="info-title">Select a course first</strong>
+                                <p class="info-text mb-0 mt-1">
+                                    Please select a course above to see available learning units.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="study-hint-text">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Select one or more learning units to focus on during this session.</span>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="d-flex gap-3 mt-4 justify-content-center flex-wrap">
+                <button type="submit" name="back" value="true" class="btn btn-lg study-btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back
+                </button>
+                <button type="submit" class="btn btn-lg study-btn-primary" id="nextButton" disabled>
+                    <i class="fas fa-arrow-right me-2"></i>Continue to Next Step
+                </button>
+                <a href="/study" class="btn btn-lg study-btn-cancel">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/study-course-form.js') }}"></script>
+<script>
+// Initialize course selection form
+const courseForm = new StudyCourseForm({{ selected_units | tojson }});
+</script>
+{% endblock %}
+

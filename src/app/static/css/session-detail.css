@@ -1,0 +1,954 @@
+/* Session Detail Page Styles */
+
+/* ==========================================
+   BACK BUTTON
+   ========================================== */
+.back-button-container {
+    margin-bottom: 1.5rem;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    background: var(--white);
+    border: 2px solid var(--gray-300);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: var(--gray-50);
+    border-color: var(--purple-400);
+    color: var(--purple-600);
+    transform: translateX(-3px);
+    text-decoration: none;
+}
+
+.back-button i {
+    font-size: 0.9rem;
+}
+
+/* ==========================================
+   SESSION OVERVIEW CARD
+   ========================================== */
+.session-overview-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 2px solid var(--gray-100);
+    position: relative;
+    overflow: hidden;
+}
+
+.session-overview-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--purple-500), var(--blue-500));
+}
+
+.session-overview-header {
+    margin-bottom: 2rem;
+}
+
+.session-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.session-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border: 1px solid var(--gray-200);
+}
+
+.session-type-badge i {
+    font-size: 0.8rem;
+}
+
+/* Session Stats Grid */
+.session-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.session-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--gray-50);
+    border-radius: 12px;
+    border: 2px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.session-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon-wrapper {
+    width: 55px;
+    height: 55px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.session-stat-card:hover .stat-icon-wrapper {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.stat-icon-wrapper.stat-primary {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+    color: var(--purple-600);
+}
+
+.stat-icon-wrapper.stat-success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+    color: var(--success-600);
+}
+
+.stat-icon-wrapper.stat-info {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+    color: var(--blue-600);
+}
+
+.stat-icon-wrapper.stat-warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05));
+    color: var(--warning-600);
+}
+
+.stat-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.35rem;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.stat-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+/* ==========================================
+   LEARNING UNITS SECTION
+   ========================================== */
+.learning-units-grid-session {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.learning-unit-card-session {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 2px solid var(--gray-200);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.learning-unit-card-session:hover {
+    border-color: var(--purple-300);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+}
+
+.unit-icon-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+    color: var(--purple-600);
+    transition: transform 0.3s ease;
+}
+
+.learning-unit-card-session:hover .unit-icon-wrapper {
+    transform: rotate(-5deg) scale(1.1);
+}
+
+.unit-info-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.unit-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.unit-meta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.unit-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.unit-meta-item i {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================
+   STUDENT FEEDBACK SECTION
+   ========================================== */
+.student-feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+    gap: 1.25rem;
+    max-width: 1400px;
+}
+
+.student-feedback-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 2px solid var(--gray-200);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    max-width: 650px;
+}
+
+.student-feedback-card:hover {
+    border-color: var(--purple-300);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.student-card-header {
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+    border-bottom: 2px solid var(--gray-100);
+    padding: 1rem 1.25rem;
+}
+
+.student-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.student-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple-500), var(--blue-600));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.student-name-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+.student-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+}
+
+.attendance-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.attendance-badge.present {
+    background: var(--success-50);
+    color: var(--success-700);
+}
+
+.attendance-badge.absent {
+    background: var(--danger-50);
+    color: var(--danger-700);
+}
+
+.attendance-badge i {
+    font-size: 0.7rem;
+}
+
+/* Student Card Body */
+.student-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Feedback Row - Horizontal Layout */
+.feedback-row {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.feedback-section {
+    padding: 0.875rem;
+    background: var(--gray-50);
+    border-radius: 8px;
+    border: 1px solid var(--gray-200);
+}
+
+.feedback-section-half {
+    flex: 1;
+    min-width: 0;
+}
+
+.feedback-section-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.feedback-section-title i {
+    font-size: 0.8rem;
+    color: var(--purple-500);
+}
+
+/* Emotional State Flow */
+.emotional-state-flow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.emotional-state-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.state-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.state-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+}
+
+.state-badge.state-before {
+    background: linear-gradient(135deg, var(--blue-50), var(--blue-100));
+    color: var(--blue-700);
+    border: 2px solid var(--blue-200);
+}
+
+.state-badge.state-after {
+    background: linear-gradient(135deg, var(--success-50), var(--success-100));
+    color: var(--success-700);
+    border: 2px solid var(--success-200);
+}
+
+.state-arrow {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Ratings Grid */
+.ratings-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 0.75rem;
+}
+
+.rating-card {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--white);
+    border-radius: 8px;
+    border: 2px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.rating-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.rating-icon {
+    display: none;
+}
+
+.rating-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.rating-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.rating-value {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.rating-value.rating-low {
+    background: var(--success-50);
+    color: var(--success-700);
+}
+
+.rating-value.rating-medium {
+    background: var(--warning-50);
+    color: var(--warning-700);
+}
+
+.rating-value.rating-high {
+    background: var(--danger-50);
+    color: var(--danger-700);
+}
+
+.rating-value.rating-high-good {
+    background: var(--success-50);
+    color: var(--success-700);
+}
+
+.rating-value.rating-none {
+    background: var(--gray-100);
+    color: var(--gray-500);
+}
+
+/* Feedback Comment */
+.feedback-comment {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding: 0.75rem;
+    background: var(--white);
+    border-radius: 8px;
+    border: 2px solid var(--gray-200);
+}
+
+/* Absence Reason */
+.absence-reason {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    padding: 0.75rem;
+    background: var(--white);
+    border-radius: 8px;
+    border: 2px solid var(--gray-200);
+}
+
+/* ==========================================
+   EVALUATIONS SECTION
+   ========================================== */
+.evaluation-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.75rem;
+    border: 2px solid var(--gray-200);
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.evaluation-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.evaluation-card.evaluation-proficiency {
+    border-left: 4px solid var(--purple-500);
+}
+
+.evaluation-card.evaluation-investment {
+    border-left: 4px solid var(--success-500);
+}
+
+.evaluation-card.evaluation-social {
+    border-left: 4px solid var(--blue-600);
+}
+
+.evaluation-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.evaluation-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.evaluation-proficiency .evaluation-icon {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+    color: var(--purple-600);
+}
+
+.evaluation-investment .evaluation-icon {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+    color: var(--success-600);
+}
+
+.evaluation-social .evaluation-icon {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+    color: var(--blue-600);
+}
+
+.evaluation-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Evaluation List */
+.evaluation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.evaluation-item {
+    padding: 1.25rem;
+    background: var(--gray-50);
+    border-radius: 12px;
+    border: 2px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.evaluation-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.eval-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    gap: 1rem;
+}
+
+.eval-student {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.eval-student i {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.eval-score {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.eval-score.score-high {
+    background: var(--success-50);
+    color: var(--success-700);
+}
+
+.eval-score.score-medium {
+    background: var(--warning-50);
+    color: var(--warning-700);
+}
+
+.eval-score.score-low {
+    background: var(--danger-50);
+    color: var(--danger-700);
+}
+
+.eval-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+}
+
+.eval-sub-section {
+    margin-bottom: 0.75rem;
+}
+
+.eval-sub-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.35rem;
+}
+
+.eval-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.eval-date i {
+    font-size: 0.75rem;
+}
+
+/* ==========================================
+   DURATION BADGE
+   ========================================== */
+.duration-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: var(--purple-50);
+    color: var(--purple-700);
+}
+
+/* ==========================================
+   TEACHER INFO CARD
+   ========================================== */
+.teacher-info-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 2px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.teacher-info-card:hover {
+    border-color: var(--purple-300);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+}
+
+.teacher-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+    color: var(--purple-600);
+    transition: transform 0.3s ease;
+}
+
+.teacher-info-card:hover .teacher-icon {
+    transform: rotate(-5deg) scale(1.1);
+}
+
+.teacher-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.teacher-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.35rem;
+}
+
+.teacher-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+@media (max-width: 1200px) {
+    .session-stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    
+    .student-feedback-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 992px) {
+    .session-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .learning-units-grid-session {
+        grid-template-columns: 1fr;
+    }
+    
+    .student-feedback-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .session-overview-card {
+        padding: 1.5rem;
+    }
+    
+    .session-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .session-stat-card {
+        padding: 1rem;
+    }
+    
+    .stat-icon-wrapper {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+    
+    .stat-value {
+        font-size: 1.1rem;
+    }
+    
+    .session-badges-row {
+        gap: 0.75rem;
+    }
+    
+    .learning-unit-card-session {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .student-card-header {
+        padding: 1rem;
+    }
+    
+    .student-card-body {
+        padding: 1rem;
+    }
+    
+    .student-feedback-grid {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+    
+    .student-feedback-card {
+        max-width: 100%;
+    }
+    
+    .feedback-row {
+        flex-direction: column;
+    }
+    
+    /* Ratings stay horizontal on tablets */
+    .ratings-grid {
+        flex-direction: row;
+    }
+    
+    .evaluation-card {
+        padding: 1.25rem;
+    }
+    
+    .eval-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 576px) {
+    .session-overview-card {
+        padding: 1.25rem;
+    }
+    
+    .session-badges-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .session-stat-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .stat-content {
+        text-align: center;
+    }
+    
+    .student-feedback-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .student-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .student-name {
+        font-size: 1rem;
+    }
+    
+    /* Stack ratings vertically on small mobile */
+    .ratings-grid {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .rating-card {
+        flex-direction: row;
+        align-items: center;
+        text-align: left;
+        gap: 0.75rem;
+    }
+    
+    .rating-content {
+        align-items: flex-start;
+        text-align: left;
+    }
+    
+    .rating-label {
+        text-align: left;
+    }
+    
+    .unit-icon-wrapper {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .unit-name {
+        font-size: 1rem;
+    }
+    
+    .teacher-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .teacher-name {
+        font-size: 1.1rem;
+    }
+}
+

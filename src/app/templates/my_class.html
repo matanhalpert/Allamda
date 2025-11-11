@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}My Class - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/my-class.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+{% if not has_class %}
+<!-- No Class Assigned Message -->
+<div class="dashboard-grid">
+    <div class="dashboard-section" style="grid-column: span 12;">
+        <div class="no-class-alert-modern">
+            <div class="no-class-alert-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="no-class-alert-title">No Class Assigned</h2>
+            <p class="no-class-alert-text">You are not currently assigned to manage any class. Please contact your school administrator for more information.</p>
+        </div>
+    </div>
+</div>
+{% else %}
+
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">My Class</h1>
+            <p class="welcome-subtitle">
+                Grade {{ class_info.grade_level }}, Year {{ class_info.year }} • Managing {{ students|length }} student{{ 's' if students|length != 1 else '' }}
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+    
+    <!-- Class Metrics Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="section-header">
+            <h3><i class="fas fa-chart-bar me-2"></i>Class Metrics</h3>
+        </div>
+        
+        <div class="class-metrics-grid">
+            <!-- Average Grade Card -->
+            <div class="metric-card-modern metric-primary">
+                <div class="metric-card-header">
+                    <div class="metric-icon-wrapper">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="metric-card-content">
+                        <div class="metric-title">Average Grade</div>
+                        {% if average_grade is not none %}
+                        <div class="metric-value {% if average_grade >= 85 %}success{% elif average_grade >= 70 %}warning{% else %}danger{% endif %}">
+                            {{ average_grade }}
+                        </div>
+                        <div class="metric-subtitle">out of 100</div>
+                        {% else %}
+                        <div class="metric-subtitle">No grade data available</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Rate Card -->
+            <div class="metric-card-modern metric-success">
+                <div class="metric-card-header">
+                    <div class="metric-icon-wrapper">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="metric-card-content">
+                        <div class="metric-title">Attendance Rate</div>
+                        {% if weekly_attendance is not none %}
+                        <div class="metric-value {% if weekly_attendance >= 85 %}success{% elif weekly_attendance >= 70 %}warning{% else %}danger{% endif %}">
+                            {{ weekly_attendance }}%
+                        </div>
+                        <div class="metric-subtitle">last 30 days</div>
+                        {% else %}
+                        <div class="metric-subtitle">No attendance data available</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Class Size Card -->
+            <div class="metric-card-modern metric-info">
+                <div class="metric-card-header">
+                    <div class="metric-icon-wrapper">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="metric-card-content">
+                        <div class="metric-title">Class Size</div>
+                        <div class="metric-value info">
+                            {{ class_info.current_size }}
+                        </div>
+                        <div class="metric-subtitle">of {{ class_info.capacity }} capacity</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Students Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.2s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-user-graduate me-2"></i>Students
+            </h3>
+            <span class="badge bg-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ students|length }}
+            </span>
+        </div>
+        
+        {% if students %}
+        <div class="students-table-wrapper">
+            <table class="students-table-modern">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Learning Style</th>
+                        <th>Routine Style</th>
+                        <th>Collaboration Style</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td class="student-name-cell">{{ student.full_name }}</td>
+                        <td class="student-email-cell">{{ student.email }}</td>
+                        <td>
+                            {% if student.learning_style %}
+                            <span class="style-badge-modern learning-style">
+                                <i class="fas fa-brain"></i>
+                                {{ student.learning_style.replace('_', ' ').title() }}
+                            </span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if student.routine_style %}
+                            <span class="style-badge-modern routine-style">
+                                <i class="fas fa-clock"></i>
+                                {{ student.routine_style.title() }}
+                            </span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if student.collaboration_style %}
+                            <span class="style-badge-modern collaboration-style">
+                                <i class="fas fa-users"></i>
+                                {{ student.collaboration_style.title() }}
+                            </span>
+                            {% else %}
+                            <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/student/{{ student.id }}" class="action-button-modern" title="View Student Details">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state-modern">
+            <div class="empty-state-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="empty-state-title">No Students Yet</div>
+            <p class="empty-state-text">No students have been assigned to this class yet.</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
+

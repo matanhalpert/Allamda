@@ -1,0 +1,73 @@
+{#
+    Reusable component for displaying test history - Modern Design
+    
+    Required context variables:
+    - test_history: List of test history dictionaries
+#}
+
+{% if test_history %}
+<div class="tests-grid-modern">
+    {% for test in test_history %}
+    <div class="test-card-modern">
+        <!-- Test Icon -->
+        <div class="test-icon-wrapper {% if test.status == 'passed' %}passed{% else %}failed{% endif %}">
+            <i class="fas {% if test.status == 'passed' %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
+        </div>
+
+        <!-- Test Content -->
+        <div class="test-content">
+            <h5 class="test-name-modern">{{ test.name }}</h5>
+            <div class="test-meta">
+                <span class="test-meta-item">
+                    <i class="fas fa-book"></i>
+                    {{ test.course_name }}
+                </span>
+                <span class="test-subject-badge">
+                    {{ test.subject_name.replace('_', ' ').title() }}
+                </span>
+                <span class="test-meta-item">
+                    <i class="fas fa-clipboard-list"></i>
+                    {{ test.type.replace('_', ' ').title() }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Test Date -->
+        <div class="test-date">
+            <i class="fas fa-calendar"></i>
+            {% if test.date %}
+            {{ test.date.strftime('%b %d, %Y') }}
+            {% else %}
+            <span class="text-muted">-</span>
+            {% endif %}
+        </div>
+
+        <!-- Test Grade -->
+        {% if test.final_grade is not none %}
+        <div class="test-grade {% if test.final_grade >= 70 %}high{% else %}low{% endif %}">
+            {{ test.final_grade }}
+        </div>
+        {% endif %}
+
+        <!-- Test Status -->
+        <span class="test-status-badge {% if test.status == 'passed' %}passed{% else %}failed{% endif %}">
+            {% if test.status == 'passed' %}
+                <i class="fas fa-trophy me-1"></i>Passed
+            {% else %}
+                <i class="fas fa-redo me-1"></i>Retry
+            {% endif %}
+        </span>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state-modern">
+    <div class="empty-state-icon">
+        <i class="fas fa-history"></i>
+    </div>
+    <div class="empty-state-title">No Test History</div>
+    <p class="empty-state-text">
+        You haven't completed any tests yet. Start learning and track your progress here!
+    </p>
+</div>
+{% endif %}

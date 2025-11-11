@@ -1,0 +1,103 @@
+/* ===================================
+   CENTRALIZED COLOR SYSTEM
+   ===================================
+   Minimal, semantic color palette.
+   ~30 variables for maintainability.
+   =================================== */
+
+:root {
+    /* ==========================================
+       PURPLE SHADES (Primary Brand)
+       ========================================== */
+    --purple-700: #4338ca;  /* Dark purple - hover states */
+    --purple-600: #4f46e5;  /* Primary purple - main brand color */
+    --purple-500: #6366f1;  /* Light purple - accents, icons */
+    --purple-400: #667eea;  /* Very light purple - gradients */
+    --purple-300: #764ba2;  /* Deep purple - gradients */
+    --purple-200: #c4b5fd;  /* Very light purple - borders */
+    --purple-100: #e9d5ff;  /* Lightest purple - backgrounds */
+    --purple-50: #f5f3ff;   /* Ultra light purple - subtle backgrounds */
+    
+    /* ==========================================
+       BLUE SHADES (Secondary Brand)
+       ========================================== */
+    --blue-700: #1d4ed8;    /* Darker blue - text on light backgrounds */
+    --blue-600: #0d6efd;    /* Primary blue - links, progress bars */
+    --blue-500: #3b82f6;    /* Light blue - gradients, accents */
+    --blue-400: #60a5fa;    /* Very light blue - gradients */
+    --blue-200: #bfdbfe;    /* Light blue border */
+    --blue-100: #dbeafe;    /* Very light blue */
+    --blue-50: #eff6ff;     /* Light blue - info backgrounds */
+    
+    /* ==========================================
+       GRAY SCALE (Neutral Palette)
+       ========================================== */
+    --gray-900: #212529;    /* Darkest - body text, headings */
+    --gray-700: #495057;    /* Dark - secondary text */
+    --gray-500: #6b7280;    /* Medium - muted text, icons */
+    --gray-400: #9ca3af;    /* Medium-light - disabled states, placeholders */
+    --gray-300: #dee2e6;    /* Light - borders, dividers */
+    --gray-200: #e9ecef;    /* Lighter - backgrounds */
+    --gray-100: #f3f4f6;    /* Very light - subtle backgrounds */
+    --gray-50: #f8f9fa;     /* Lightest - page backgrounds */
+    
+    /* ==========================================
+       STATE COLORS
+       ========================================== */
+    /* Success (Green) */
+    --success-700: #047857;  /* Darker green - text */
+    --success-600: #059669;  /* Dark green */
+    --success-500: #10b981;  /* Primary green */
+    --success-400: #34d399;  /* Light green - gradients */
+    --success-200: #a7f3d0;  /* Light green border */
+    --success-100: #d1fae5;  /* Very light green */
+    --success-50: #ecfdf5;   /* Light green background */
+    
+    /* Danger (Red) */
+    --danger-700: #b91c1c;   /* Darker red - text */
+    --danger-600: #dc2626;   /* Dark red */
+    --danger-500: #ef4444;   /* Primary red */
+    --danger-200: #fecaca;   /* Light red border */
+    --danger-100: #fee2e2;   /* Very light red */
+    --danger-50: #fef2f2;    /* Light red background */
+    
+    /* Warning (Orange/Yellow) */
+    --warning-700: #b45309;  /* Darker orange - text */
+    --warning-600: #d97706;  /* Dark orange */
+    --warning-500: #f59e0b;  /* Primary orange */
+    --warning-200: #fde68a;  /* Light yellow border */
+    --warning-100: #fef3c7;  /* Very light yellow */
+    --warning-50: #fffbeb;   /* Light yellow background */
+    
+    /* ==========================================
+       SPECIAL PURPOSE
+       ========================================== */
+    --white: #ffffff;
+    --navy: #001f3f;         /* Special text color */
+    --pink: #d63384;         /* Code syntax highlighting */
+    
+    /* ==========================================
+       SEMANTIC ALIASES
+       Use these in your CSS for better readability
+       ========================================== */
+    
+    /* Primary colors */
+    --color-primary: var(--purple-600);
+    --color-primary-light: var(--purple-500);
+    --color-primary-dark: var(--purple-700);
+    --color-secondary: var(--blue-600);
+    
+    /* Text colors */
+    --text-primary: var(--gray-900);
+    --text-secondary: var(--gray-700);
+    --text-muted: var(--gray-500);
+    
+    /* Background colors */
+    --bg-primary: var(--white);
+    --bg-secondary: var(--gray-50);
+    --bg-subtle: var(--gray-100);
+    
+    /* Border colors */
+    --border-primary: var(--gray-300);
+    --border-light: var(--gray-200);
+}

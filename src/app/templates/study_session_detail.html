@@ -1,0 +1,561 @@
+{% extends "base.html" %}
+
+{% block title %}Session Details - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/study-session.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/session-detail.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Back Button -->
+<div class="back-button-container">
+    <a href="{% if 'CLASS' in user.user_type|upper and 'MANAGER' in user.user_type|upper %}{{ url_for('class_manager.classroom') }}{% else %}{{ url_for('study.study_home') }}{% endif %}" 
+       class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back</span>
+    </a>
+</div>
+
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">Study Session Details</h1>
+            <p class="welcome-subtitle">
+                {% if session.learning_units and session.learning_units[0].course_name %}
+                    {{ session.learning_units[0].course_name }} • {{ session.session_type }}
+                {% else %}
+                    Session Information and Student Feedback
+                {% endif %}
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-chart-line"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+
+    <!-- Session Overview Header Card -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="session-overview-card">
+            <div class="session-overview-header">
+                <div class="session-badges-row">
+                    <span class="session-category-badge {% if session.session_category == 'Home Hours' %}category-home{% elif session.session_category == 'School Hours' %}category-school{% else %}category-default{% endif %}">
+                        <i class="fas fa-{% if session.session_category == 'Home Hours' %}home{% else %}school{% endif %}"></i>
+                        {{ session.session_category }}
+                    </span>
+                    <span class="status-badge-modern {% if session.status == 'COMPLETED' %}status-completed{% elif session.status == 'ACTIVE' %}status-active{% elif session.status == 'PAUSED' %}status-paused{% else %}status-pending{% endif %}">
+                        <i class="fas fa-{% if session.status == 'COMPLETED' %}check-circle{% elif session.status == 'ACTIVE' %}play{% elif session.status == 'PAUSED' %}pause{% else %}clock{% endif %}"></i>
+                        {{ session.status|title }}
+                    </span>
+                    <span class="session-type-badge">
+                        <i class="fas fa-tag"></i>
+                        {{ session.session_type }}
+                    </span>
+                </div>
+            </div>
+            
+            <div class="session-stats-grid">
+                <!-- Duration Stat -->
+                <div class="session-stat-card">
+                    <div class="stat-icon-wrapper stat-primary">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Duration</div>
+                        <div class="stat-value">
+                            {% if session.duration_display %}
+                                {{ session.duration_display }}
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </div>
+                        {% if session.total_pause_minutes > 0 %}
+                        <div class="stat-subtitle">
+                            {{ session.total_pause_minutes }} min paused
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Course Stat -->
+                <div class="session-stat-card">
+                    <div class="stat-icon-wrapper stat-success">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Course</div>
+                        <div class="stat-value">
+                            {% if session.learning_units %}
+                                {{ session.learning_units[0].course_name }}
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </div>
+                        {% if session.learning_units and session.learning_units[0].course_subject %}
+                        <div class="stat-subtitle">{{ session.learning_units[0].course_subject }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Students Stat -->
+                <div class="session-stat-card">
+                    <div class="stat-icon-wrapper stat-info">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Students</div>
+                        <div class="stat-value">{{ session.students|length }}</div>
+                        {% if session.students %}
+                        <div class="stat-subtitle">
+                            {% set attendant_count = session.students|selectattr('is_attendant', 'equalto', true)|list|length %}
+                            {{ attendant_count }} present
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Date/Time Stat -->
+                <div class="session-stat-card">
+                    <div class="stat-icon-wrapper stat-warning">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Date</div>
+                        <div class="stat-value">{{ session.start_time.strftime('%b %d, %Y') }}</div>
+                        <div class="stat-subtitle">
+                            {{ session.start_time.strftime('%I:%M %p') }}
+                            {% if session.end_time %}
+                                - {{ session.end_time.strftime('%I:%M %p') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Units Section -->
+    {% if session.learning_units %}
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.2s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-book-open me-2"></i>Learning Units Covered
+            </h3>
+            <span class="badge bg-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ session.learning_units|length }}
+            </span>
+        </div>
+        
+        <div class="learning-units-grid-session">
+            {% for unit in session.learning_units %}
+            <div class="learning-unit-card-session">
+                <div class="unit-icon-wrapper">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="unit-info-content">
+                    <h4 class="unit-name">{{ unit.name }}</h4>
+                    <div class="unit-meta-info">
+                        <span class="unit-meta-item">
+                            <i class="fas fa-book"></i>
+                            {{ unit.course_name }}
+                        </span>
+                        {% if unit.course_subject %}
+                        <span class="unit-meta-item">
+                            <i class="fas fa-tag"></i>
+                            {{ unit.course_subject }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Student Feedback Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.3s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-comment-alt me-2"></i>Student Feedback
+            </h3>
+            <span class="badge bg-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ session.students|length }}
+            </span>
+        </div>
+        
+        <div class="student-feedback-grid">
+            {% for student in session.students %}
+            <div class="student-feedback-card">
+                <div class="student-card-header">
+                    <div class="student-info">
+                        <div class="student-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="student-name-wrapper">
+                            <h4 class="student-name">{{ student.name }}</h4>
+                            {% if student.is_attendant %}
+                                <span class="attendance-badge present">
+                                    <i class="fas fa-check"></i>
+                                    Present
+                                </span>
+                            {% else %}
+                                <span class="attendance-badge absent">
+                                    <i class="fas fa-times"></i>
+                                    Absent
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="student-card-body">
+                    <!-- Emotional State and Ratings Row -->
+                    <div class="feedback-row">
+                        <!-- Emotional State -->
+                        {% if student.emotional_state_before or student.emotional_state_after %}
+                        <div class="feedback-section feedback-section-half">
+                            <div class="feedback-section-title">
+                                <i class="fas fa-heart"></i>
+                                Emotional State
+                            </div>
+                            <div class="emotional-state-flow">
+                                <div class="emotional-state-item">
+                                    <div class="state-label">Before</div>
+                                    <span class="state-badge state-before">
+                                        {{ student.emotional_state_before|title if student.emotional_state_before else '-' }}
+                                    </span>
+                                </div>
+                                <div class="state-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                                <div class="emotional-state-item">
+                                    <div class="state-label">After</div>
+                                    <span class="state-badge state-after">
+                                        {{ student.emotional_state_after|title if student.emotional_state_after else '-' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Feedback Ratings -->
+                        <div class="feedback-section feedback-section-half">
+                            <div class="feedback-section-title">
+                                <i class="fas fa-star"></i>
+                                Ratings
+                            </div>
+                            <div class="ratings-grid">
+                                <div class="rating-card">
+                                    <div class="rating-icon">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                    </div>
+                                    <div class="rating-content">
+                                        <div class="rating-label">Difficulty</div>
+                                        {% if student.difficulty_feedback %}
+                                            <div class="rating-value 
+                                                {% if student.difficulty_feedback <= 3 %}
+                                                    rating-low
+                                                {% elif student.difficulty_feedback <= 6 %}
+                                                    rating-medium
+                                                {% else %}
+                                                    rating-high
+                                                {% endif %}
+                                            ">
+                                                {{ student.difficulty_feedback }}/10
+                                            </div>
+                                        {% else %}
+                                            <div class="rating-value rating-none">-</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="rating-card">
+                                    <div class="rating-icon">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </div>
+                                    <div class="rating-content">
+                                        <div class="rating-label">Understanding</div>
+                                        {% if student.understanding_feedback %}
+                                            <div class="rating-value 
+                                                {% if student.understanding_feedback >= 7 %}
+                                                    rating-high-good
+                                                {% elif student.understanding_feedback >= 4 %}
+                                                    rating-medium
+                                                {% else %}
+                                                    rating-low
+                                                {% endif %}
+                                            ">
+                                                {{ student.understanding_feedback }}/10
+                                            </div>
+                                        {% else %}
+                                            <div class="rating-value rating-none">-</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Textual Feedback -->
+                    {% if student.textual_feedback %}
+                    <div class="feedback-section">
+                        <div class="feedback-section-title">
+                            <i class="fas fa-comment-dots"></i>
+                            Comments
+                        </div>
+                        <div class="feedback-comment">
+                            {{ student.textual_feedback }}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Attendance Reason -->
+                    {% if not student.is_attendant and student.attendance_reason %}
+                    <div class="feedback-section">
+                        <div class="feedback-section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Absence Reason
+                        </div>
+                        <div class="absence-reason">
+                            {{ student.attendance_reason|replace('_', ' ')|title }}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Evaluations Section (Class Managers Only) -->
+    {% if session.is_class_manager_view %}
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.4s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-star me-2"></i>AI Evaluations
+            </h3>
+        </div>
+
+        <!-- Proficiency Evaluations -->
+        {% if session.proficiency_evaluations %}
+        <div class="evaluation-card evaluation-proficiency">
+            <div class="evaluation-card-header">
+                <div class="evaluation-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h4 class="evaluation-title">Proficiency Evaluations</h4>
+            </div>
+            <div class="evaluation-list">
+                {% for eval in session.proficiency_evaluations %}
+                <div class="evaluation-item">
+                    <div class="eval-item-header">
+                        <div class="eval-student">
+                            <i class="fas fa-user"></i>
+                            {{ eval.student_name }}
+                        </div>
+                        <div class="eval-score 
+                            {% if eval.score >= 7 %}
+                                score-high
+                            {% elif eval.score >= 4 %}
+                                score-medium
+                            {% else %}
+                                score-low
+                            {% endif %}
+                        ">
+                            {{ eval.score }}/10
+                        </div>
+                    </div>
+                    {% if eval.description %}
+                    <div class="eval-description">{{ eval.description }}</div>
+                    {% endif %}
+                    <div class="eval-date">
+                        <i class="fas fa-calendar"></i>
+                        {{ eval.date.strftime('%b %d, %Y') }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Investment Evaluations -->
+        {% if session.investment_evaluations %}
+        <div class="evaluation-card evaluation-investment">
+            <div class="evaluation-card-header">
+                <div class="evaluation-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4 class="evaluation-title">Investment Evaluations</h4>
+            </div>
+            <div class="evaluation-list">
+                {% for eval in session.investment_evaluations %}
+                <div class="evaluation-item">
+                    <div class="eval-item-header">
+                        <div class="eval-student">
+                            <i class="fas fa-user"></i>
+                            {{ eval.student_name }}
+                        </div>
+                        <div class="eval-score 
+                            {% if eval.score >= 7 %}
+                                score-high
+                            {% elif eval.score >= 4 %}
+                                score-medium
+                            {% else %}
+                                score-low
+                            {% endif %}
+                        ">
+                            {{ eval.score }}/10
+                        </div>
+                    </div>
+                    {% if eval.ai_description %}
+                    <div class="eval-sub-section">
+                        <div class="eval-sub-title">AI Assessment:</div>
+                        <div class="eval-description">{{ eval.ai_description }}</div>
+                    </div>
+                    {% endif %}
+                    {% if eval.human_description %}
+                    <div class="eval-sub-section">
+                        <div class="eval-sub-title">Teacher Assessment:</div>
+                        <div class="eval-description">{{ eval.human_description }}</div>
+                    </div>
+                    {% endif %}
+                    <div class="eval-date">
+                        <i class="fas fa-calendar"></i>
+                        {{ eval.date.strftime('%b %d, %Y') }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Social Evaluations -->
+        {% if session.social_evaluations %}
+        <div class="evaluation-card evaluation-social">
+            <div class="evaluation-card-header">
+                <div class="evaluation-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4 class="evaluation-title">Social Evaluations</h4>
+            </div>
+            <div class="evaluation-list">
+                {% for eval in session.social_evaluations %}
+                <div class="evaluation-item">
+                    <div class="eval-item-header">
+                        <div class="eval-student">
+                            <i class="fas fa-user"></i>
+                            {{ eval.student_name }}
+                        </div>
+                        <div class="eval-score 
+                            {% if eval.score >= 7 %}
+                                score-high
+                            {% elif eval.score >= 4 %}
+                                score-medium
+                            {% else %}
+                                score-low
+                            {% endif %}
+                        ">
+                            {{ eval.score }}/10
+                        </div>
+                    </div>
+                    {% if eval.description %}
+                    <div class="eval-description">{{ eval.description }}</div>
+                    {% endif %}
+                    <div class="eval-date">
+                        <i class="fas fa-calendar"></i>
+                        {{ eval.date.strftime('%b %d, %Y') }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Session Pauses Section -->
+    {% if session.pauses %}
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.5s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-pause-circle me-2"></i>Session Pauses
+            </h3>
+            {% if session.total_pause_minutes > 0 %}
+            <span class="badge bg-secondary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                Total: {{ session.total_pause_minutes }} min
+            </span>
+            {% endif %}
+        </div>
+        
+        <div class="sessions-table-wrapper">
+            <table class="sessions-table-modern">
+                <thead>
+                    <tr>
+                        <th class="col-center">Start Time</th>
+                        <th class="col-center">End Time</th>
+                        <th class="col-center">Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pause in session.pauses %}
+                    <tr>
+                        <td class="col-center">
+                            <span class="session-time">
+                                <i class="fas fa-clock"></i>
+                                {{ pause.start_time.strftime('%I:%M %p') }}
+                            </span>
+                        </td>
+                        <td class="col-center">
+                            {% if pause.end_time %}
+                                <span class="session-time">
+                                    <i class="fas fa-clock"></i>
+                                    {{ pause.end_time.strftime('%I:%M %p') }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted">Ongoing</span>
+                            {% endif %}
+                        </td>
+                        <td class="col-center">
+                            {% if pause.duration_minutes %}
+                                <span class="duration-badge">{{ pause.duration_minutes }} min</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Teacher Information -->
+    {% if session.teacher_name %}
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.6s;">
+        <div class="teacher-info-card">
+            <div class="teacher-icon">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="teacher-content">
+                <div class="teacher-label">AI Teacher</div>
+                <div class="teacher-name">{{ session.teacher_name }}</div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+<!-- End Dashboard Grid -->
+
+{% endblock %}
+

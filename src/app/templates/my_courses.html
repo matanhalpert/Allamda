@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}My Courses - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/my-courses.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">My Courses</h1>
+            <p class="welcome-subtitle">
+                {% if selected_subject %}
+                    Showing {{ selected_subject.replace('_', ' ').title() }} courses
+                {% else %}
+                    Track your learning progress and upcoming assessments
+                {% endif %}
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-book-open"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+    
+    <!-- Filters Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="section-header">
+            <h3><i class="fas fa-sliders-h me-2"></i>Filter Courses</h3>
+            {% if selected_subject or selected_grade or selected_state %}
+            <a href="/my_courses" class="view-all-link">
+                <i class="fas fa-times me-1"></i>Clear Filters
+            </a>
+            {% endif %}
+        </div>
+        <form method="GET" action="/my_courses" id="filterForm" class="filter-form-modern">
+            <div class="row g-3">
+                <!-- Subject Filter -->
+                <div class="col-md-4">
+                    <label for="subject" class="form-label">
+                        <i class="fas fa-book"></i>Subject
+                    </label>
+                    <select name="subject" id="subject" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Subjects</option>
+                        {% for subject in all_subjects %}
+                        <option value="{{ subject }}" {% if selected_subject == subject %}selected{% endif %}>
+                            {{ subject.replace('_', ' ').title() }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Grade Filter -->
+                <div class="col-md-4">
+                    <label for="grade" class="form-label">
+                        <i class="fas fa-layer-group"></i>Grade Level
+                    </label>
+                    <select name="grade" id="grade" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Grades</option>
+                        {% for grade in all_grades %}
+                        <option value="{{ grade }}" {% if selected_grade == grade %}selected{% endif %}>
+                            Grade {{ grade }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- State Filter -->
+                <div class="col-md-4">
+                    <label for="state" class="form-label">
+                        <i class="fas fa-tasks"></i>Progress Status
+                    </label>
+                    <select name="state" id="state" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Statuses</option>
+                        {% for state in all_states %}
+                        <option value="{{ state }}" {% if selected_state == state %}selected{% endif %}>
+                            {{ state.replace('_', ' ').title() }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Courses Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.2s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-graduation-cap me-2"></i>
+                {% if selected_subject %}
+                    {{ selected_subject.replace('_', ' ').title() }} Courses
+                {% else %}
+                    All Courses
+                {% endif %}
+            </h3>
+            <span class="badge bg-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ courses|length }}
+            </span>
+        </div>
+        
+        {% include '_course_progress.html' %}
+    </div>
+
+    <!-- Upcoming Tests Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.3s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-calendar-check me-2"></i>Upcoming Tests
+            </h3>
+            <span class="badge bg-warning text-dark" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ upcoming_tests|length }}
+            </span>
+        </div>
+        
+        {% include '_upcoming_tests.html' %}
+    </div>
+
+    <!-- Test History Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.4s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-history me-2"></i>Test History
+            </h3>
+            <span class="badge bg-secondary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ test_history|length }}
+            </span>
+        </div>
+        
+        {% include '_test_history.html' %}
+    </div>
+
+</div>
+
+{% endblock %}
+

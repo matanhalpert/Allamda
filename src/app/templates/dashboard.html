@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- Welcome Banner Section -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">{{ dashboard.welcome_message }}</h1>
+            <p class="welcome-subtitle">{{ dashboard.highlight }}</p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+    
+    <!-- Weekly Calendar Section -->
+    <div class="dashboard-section calendar-section">
+        <div class="section-header">
+            <h3><i class="fas fa-calendar-week me-2"></i>This Week</h3>
+        </div>
+        <div class="calendar-grid">
+            {% for day in dashboard.week_days %}
+            <div class="calendar-day {% if day.is_today %}today{% endif %} {% if day.events %}has-events{% endif %}" 
+                 data-date="{{ day.date.strftime('%Y-%m-%d') }}">
+                <div class="day-header">
+                    <span class="day-name">{{ day.day_name }}</span>
+                    <span class="day-number">{{ day.day_number }}</span>
+                </div>
+                <div class="day-events">
+                    {% for event in day.events %}
+                    <div class="event-dot event-{{ event.type }}" 
+                         data-event-title="{{ event.title }}"
+                         data-event-time="{{ event.time }}">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Quick Statistics Section -->
+    <div class="dashboard-section stats-section">
+        <div class="section-header">
+            <h3><i class="fas fa-chart-line me-2"></i>Quick Stats</h3>
+        </div>
+        <div class="stats-grid">
+            {% if user.user_type == 'student' %}
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.total_study_hours }}h</div>
+                        <div class="stat-label">Study Hours</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-success">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.completion_rate }}%</div>
+                        <div class="stat-label">Completion Rate</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-info">
+                    <div class="stat-icon">
+                        <i class="fas fa-book-reader"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.active_sessions }}</div>
+                        <div class="stat-label">Active Sessions</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.upcoming_tests }}</div>
+                        <div class="stat-label">Upcoming Tests</div>
+                    </div>
+                </div>
+            {% elif user.user_type == 'class manager' %}
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.class_overview.total_students }}</div>
+                        <div class="stat-label">Total Students</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-success">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.class_overview.avg_attendance }}%</div>
+                        <div class="stat-label">Attendance</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-info">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.class_overview.avg_performance }}%</div>
+                        <div class="stat-label">Avg Performance</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.pending_evaluations }}</div>
+                        <div class="stat-label">Pending Reviews</div>
+                    </div>
+                </div>
+            {% elif user.user_type == 'parent' %}
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.total_children }}</div>
+                        <div class="stat-label">Children</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-success">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.avg_performance }}%</div>
+                        <div class="stat-label">Avg Performance</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-info">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.study_hours_week }}h</div>
+                        <div class="stat-label">Study Hours/Week</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.upcoming_events }}</div>
+                        <div class="stat-label">Upcoming Events</div>
+                    </div>
+                </div>
+            {% elif user.user_type == 'school manager' %}
+                <div class="stat-card stat-primary">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.total_students }}</div>
+                        <div class="stat-label">Total Students</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-success">
+                    <div class="stat-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.total_teachers }}</div>
+                        <div class="stat-label">Teachers</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-info">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.avg_school_performance }}%</div>
+                        <div class="stat-label">School Performance</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-warning">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value">{{ dashboard.stats.active_courses }}</div>
+                        <div class="stat-label">Active Courses</div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="dashboard-section actions-section">
+        <div class="section-header">
+            <h3><i class="fas fa-bolt me-2"></i>Quick Actions</h3>
+        </div>
+        <div class="actions-grid">
+            {% for action in dashboard.quick_actions %}
+            <a href="{{ action.url }}" class="action-card action-{{ action.color }}">
+                <div class="action-icon">
+                    <i class="fas fa-{{ action.icon }}"></i>
+                </div>
+                <div class="action-info">
+                    <div class="action-title">{{ action.title }}</div>
+                    <div class="action-description">{{ action.description }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Student-Specific: Active Courses Section -->
+    {% if user.user_type == 'student' %}
+    <div class="dashboard-section courses-section">
+        <div class="section-header">
+            <h3><i class="fas fa-book-open me-2"></i>My Active Courses</h3>
+            <a href="/my_courses" class="view-all-link">View All <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
+        <div class="courses-grid">
+            {% for course in dashboard.active_courses %}
+            <div class="course-card">
+                <div class="course-icon course-icon-{{ course.color }}">
+                    <i class="fas fa-{{ course.icon }}"></i>
+                </div>
+                <div class="course-info">
+                    <h4 class="course-name">{{ course.name }}</h4>
+                    <p class="course-meta">
+                        <span class="subject-name">{{ course.subject }}</span> • 
+                        <span class="text-muted">{{ course.grade_level }}</span>
+                    </p>
+                    <div class="course-progress-container">
+                        <div class="progress-info">
+                            <span class="progress-label">Progress</span>
+                            <span class="progress-value">{{ course.progress }}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-{{ course.color }}" 
+                                 role="progressbar" 
+                                 style="width: {{ course.progress }}%"
+                                 aria-valuenow="{{ course.progress }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="next-unit">
+                        <i class="fas fa-chevron-right me-1"></i>
+                        Next: {{ course.next_unit }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Student-Specific: Recent Achievements -->
+    <div class="dashboard-section achievements-section">
+        <div class="section-header">
+            <h3><i class="fas fa-trophy me-2"></i>Recent Achievements</h3>
+        </div>
+        <div class="achievements-list">
+            {% for achievement in dashboard.recent_achievements %}
+            <div class="achievement-item">
+                <div class="achievement-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <div class="achievement-info">
+                    <div class="achievement-title">{{ achievement.title }}</div>
+                    <div class="achievement-description">{{ achievement.description }}</div>
+                </div>
+                <div class="achievement-date">{{ achievement.date }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Class Manager Specific: Class Overview and Activities -->
+    {% if user.user_type == 'class manager' %}
+    <div class="dashboard-section activities-section">
+        <div class="section-header">
+            <h3><i class="fas fa-tasks me-2"></i>Recent Activities</h3>
+        </div>
+        <div class="activities-list">
+            {% for activity in dashboard.recent_activities %}
+            <div class="activity-item priority-{{ activity.priority }}">
+                <div class="activity-indicator"></div>
+                <div class="activity-info">
+                    <div class="activity-title">{{ activity.title }}</div>
+                    <div class="activity-description">{{ activity.description }}</div>
+                </div>
+                <div class="activity-badge badge-{{ activity.priority }}">
+                    {{ activity.priority }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Event Details Modal/Tooltip (Hidden by default) -->
+<div id="event-tooltip" class="event-tooltip" style="display: none;">
+    <div class="tooltip-content">
+        <div class="tooltip-title"></div>
+        <div class="tooltip-time"></div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

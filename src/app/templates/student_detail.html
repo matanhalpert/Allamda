@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+
+{% block title %}Student Details - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/my-courses.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/student-detail.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Back Button -->
+<div class="back-button-container">
+    <a href="javascript:history.back()" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to {{ back_label }}</span>
+    </a>
+</div>
+
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">{{ student.full_name }}</h1>
+            <p class="welcome-subtitle">
+                Student Profile & Performance Overview
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-user-graduate"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+    
+    <!-- Student Header Card -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="student-header-card">
+            <div class="student-header-main">
+                <div class="student-header-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="student-header-info">
+                    <h2 class="student-name-title">{{ student.full_name }}</h2>
+                    <div class="student-info-grid">
+                        <div class="student-info-item">
+                            <span class="info-label">Email:</span>
+                            <span class="info-value">{{ student.email }}</span>
+                        </div>
+                        <div class="student-info-item">
+                            <span class="info-label">Student ID:</span>
+                            <span class="info-value">{{ student.id }}</span>
+                        </div>
+                        <div class="student-info-item">
+                            <span class="info-label">Birth Date:</span>
+                            <span class="info-value">{{ student.birthdate.strftime('%B %d, %Y') if student.birthdate else 'N/A' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Metrics Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.2s;">
+        <div class="section-header">
+            <h3><i class="fas fa-chart-bar me-2"></i>Performance Metrics</h3>
+        </div>
+        
+        <div class="performance-metrics-grid">
+            <!-- Average Grade Card -->
+            <div class="metric-card-modern metric-primary">
+                <div class="metric-card-header">
+                    <div class="metric-icon-wrapper">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="metric-card-content">
+                        <div class="metric-title">Average Grade</div>
+                        {% if average_grade is not none %}
+                        <div class="metric-value {% if average_grade >= 85 %}success{% elif average_grade >= 70 %}warning{% else %}danger{% endif %}">
+                            {{ average_grade }}
+                        </div>
+                        <div class="metric-subtitle">out of 100</div>
+                        {% else %}
+                        <div class="metric-subtitle">No grade data available</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Card -->
+            <div class="metric-card-modern metric-success">
+                <div class="metric-card-header">
+                    <div class="metric-icon-wrapper">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="metric-card-content">
+                        <div class="metric-title">Attendance (Last 30 Days)</div>
+                        
+                        <!-- School Hours -->
+                        <div class="attendance-detail-item">
+                            <div class="attendance-detail-header">
+                                <span class="attendance-label">School Hours</span>
+                                {% if attendance.school_hours.attendance_rate is not none %}
+                                <span class="attendance-badge {% if attendance.school_hours.attendance_rate >= 85 %}success{% elif attendance.school_hours.attendance_rate >= 70 %}warning{% else %}danger{% endif %}">
+                                    {{ attendance.school_hours.attendance_rate }}%
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% if attendance.school_hours.total_sessions > 0 %}
+                            <div class="attendance-stats">
+                                {{ attendance.school_hours.attended_sessions }} / {{ attendance.school_hours.total_sessions }} sessions
+                            </div>
+                            {% else %}
+                            <div class="attendance-stats">No data</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Home Hours -->
+                        <div class="attendance-detail-item">
+                            <div class="attendance-detail-header">
+                                <span class="attendance-label">Home Hours</span>
+                                {% if attendance.home_hours.attendance_rate is not none %}
+                                <span class="attendance-badge {% if attendance.home_hours.attendance_rate >= 85 %}success{% elif attendance.home_hours.attendance_rate >= 70 %}warning{% else %}danger{% endif %}">
+                                    {{ attendance.home_hours.attendance_rate }}%
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% if attendance.home_hours.total_sessions > 0 %}
+                            <div class="attendance-stats">
+                                {{ attendance.home_hours.attended_sessions }} / {{ attendance.home_hours.total_sessions }} sessions
+                            </div>
+                            {% else %}
+                            <div class="attendance-stats">No data</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learning Profile Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.3s;">
+        <div class="learning-profile-card">
+            <div class="learning-profile-header">
+                <i class="fas fa-brain"></i>
+                <h5>Learning Profile</h5>
+            </div>
+            
+            <div class="learning-profile-grid">
+                <div class="profile-item">
+                    <div class="profile-label">Learning Style</div>
+                    {% if learning_profile.learning_style %}
+                    <span class="profile-badge learning-style">
+                        <i class="fas fa-brain"></i>
+                        {{ learning_profile.learning_style.replace('_', ' ').title() }}
+                    </span>
+                    {% else %}
+                    <span class="text-muted">Not specified</span>
+                    {% endif %}
+                </div>
+                
+                <div class="profile-item">
+                    <div class="profile-label">Routine Style</div>
+                    {% if learning_profile.routine_style %}
+                    <span class="profile-badge routine-style">
+                        <i class="fas fa-clock"></i>
+                        {{ learning_profile.routine_style.title() }}
+                    </span>
+                    {% else %}
+                    <span class="text-muted">Not specified</span>
+                    {% endif %}
+                </div>
+                
+                <div class="profile-item">
+                    <div class="profile-label">Collaboration Style</div>
+                    {% if learning_profile.collaboration_style %}
+                    <span class="profile-badge collaboration-style">
+                        <i class="fas fa-users"></i>
+                        {{ learning_profile.collaboration_style.title() }}
+                    </span>
+                    {% else %}
+                    <span class="text-muted">Not specified</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Evaluations Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.4s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-clipboard-check me-2"></i>Recent Evaluations
+            </h3>
+            <span class="badge bg-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ recent_evaluations|length }}
+            </span>
+        </div>
+        
+        {% if recent_evaluations %}
+        <!-- Group evaluations by type -->
+        {% set proficiency_evals = recent_evaluations | selectattr('type', 'equalto', 'Proficiency') | list %}
+        {% set investment_evals = recent_evaluations | selectattr('type', 'equalto', 'Investment') | list %}
+        {% set social_evals = recent_evaluations | selectattr('type', 'equalto', 'Social') | list %}
+        
+        <!-- Proficiency Evaluations -->
+        {% if proficiency_evals %}
+        <div class="evaluation-card evaluation-proficiency">
+            <div class="evaluation-card-header">
+                <div class="evaluation-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h4 class="evaluation-title">Proficiency Evaluations</h4>
+            </div>
+            <div class="evaluation-list">
+                {% for eval in proficiency_evals %}
+                <div class="evaluation-item">
+                    <div class="eval-item-header">
+                        <div class="eval-date">
+                            <i class="fas fa-calendar"></i>
+                            {{ eval.date.strftime('%b %d, %Y') if eval.date else 'N/A' }}
+                        </div>
+                        <div class="eval-score 
+                            {% if eval.score >= 7 %}
+                                score-high
+                            {% elif eval.score >= 4 %}
+                                score-medium
+                            {% else %}
+                                score-low
+                            {% endif %}
+                        ">
+                            {{ eval.score }}/10
+                        </div>
+                    </div>
+                    {% if eval.description or eval.ai_description %}
+                    <div class="eval-description">{{ eval.description or eval.ai_description }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Investment Evaluations -->
+        {% if investment_evals %}
+        <div class="evaluation-card evaluation-investment">
+            <div class="evaluation-card-header">
+                <div class="evaluation-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4 class="evaluation-title">Investment Evaluations</h4>
+            </div>
+            <div class="evaluation-list">
+                {% for eval in investment_evals %}
+                <div class="evaluation-item">
+                    <div class="eval-item-header">
+                        <div class="eval-date">
+                            <i class="fas fa-calendar"></i>
+                            {{ eval.date.strftime('%b %d, %Y') if eval.date else 'N/A' }}
+                        </div>
+                        <div class="eval-score 
+                            {% if eval.score >= 7 %}
+                                score-high
+                            {% elif eval.score >= 4 %}
+                                score-medium
+                            {% else %}
+                                score-low
+                            {% endif %}
+                        ">
+                            {{ eval.score }}/10
+                        </div>
+                    </div>
+                    {% if eval.ai_description %}
+                    <div class="eval-sub-section">
+                        <div class="eval-sub-title">AI Assessment:</div>
+                        <div class="eval-description">{{ eval.ai_description }}</div>
+                    </div>
+                    {% endif %}
+                    {% if eval.human_description %}
+                    <div class="eval-sub-section">
+                        <div class="eval-sub-title">Teacher Assessment:</div>
+                        <div class="eval-description">{{ eval.human_description }}</div>
+                    </div>
+                    {% endif %}
+                    {% if eval.description and not eval.ai_description and not eval.human_description %}
+                    <div class="eval-description">{{ eval.description }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Social Evaluations -->
+        {% if social_evals %}
+        <div class="evaluation-card evaluation-social">
+            <div class="evaluation-card-header">
+                <div class="evaluation-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h4 class="evaluation-title">Social Evaluations</h4>
+            </div>
+            <div class="evaluation-list">
+                {% for eval in social_evals %}
+                <div class="evaluation-item">
+                    <div class="eval-item-header">
+                        <div class="eval-date">
+                            <i class="fas fa-calendar"></i>
+                            {{ eval.date.strftime('%b %d, %Y') if eval.date else 'N/A' }}
+                        </div>
+                        <div class="eval-score 
+                            {% if eval.score >= 7 %}
+                                score-high
+                            {% elif eval.score >= 4 %}
+                                score-medium
+                            {% else %}
+                                score-low
+                            {% endif %}
+                        ">
+                            {{ eval.score }}/10
+                        </div>
+                    </div>
+                    {% if eval.description or eval.ai_description %}
+                    <div class="eval-description">{{ eval.description or eval.ai_description }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="empty-state-modern">
+            <div class="empty-state-icon">
+                <i class="fas fa-clipboard-check"></i>
+            </div>
+            <div class="empty-state-title">No Recent Evaluations</div>
+            <p class="empty-state-text">No recent evaluations available for this student.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Course Progress Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.5s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-graduation-cap me-2"></i>Course Progress
+            </h3>
+            <span class="badge bg-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ courses|length }}
+            </span>
+        </div>
+        
+        {% set student_id = student.id %}
+        {% include '_course_progress.html' %}
+    </div>
+
+    <!-- Upcoming Tests Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.6s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-calendar-check me-2"></i>Upcoming Tests
+            </h3>
+            <span class="badge bg-warning text-dark" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ upcoming_tests|length }}
+            </span>
+        </div>
+        
+        {% include '_upcoming_tests.html' %}
+    </div>
+
+    <!-- Test History Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.7s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-history me-2"></i>Test History
+            </h3>
+            <span class="badge bg-secondary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ test_history|length }}
+            </span>
+        </div>
+        
+        {% include '_test_history.html' %}
+    </div>
+
+</div>
+
+{% endblock %}
+

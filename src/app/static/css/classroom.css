@@ -1,0 +1,427 @@
+/* Classroom Page Styles */
+
+/* Page Layout */
+.classroom-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Active Session Card */
+.active-session-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 2px solid var(--gray-100);
+    animation: fadeInUp 0.6s ease-out;
+    position: relative;
+    overflow: hidden;
+    animation-delay: 0.1s;
+}
+
+.active-session-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--purple-500), var(--blue-500));
+}
+
+.session-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid var(--gray-100);
+}
+
+.session-header-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+    color: var(--purple-600);
+    transition: transform 0.3s ease;
+}
+
+.active-session-card:hover .session-header-icon {
+    transform: rotate(-5deg) scale(1.1);
+}
+
+.session-header-text h5 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Sessions Table Classroom-specific overrides */
+.sessions-table-wrapper {
+    margin-bottom: 2rem;
+}
+
+/* Attendance Badges */
+.attendance-badge-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.attendance-badge-modern i {
+    font-size: 0.75rem;
+}
+
+.attendance-badge-modern.present {
+    background: linear-gradient(135deg, var(--success-50), var(--success-100));
+    color: var(--success-700);
+    border: 1px solid var(--success-200);
+}
+
+.attendance-badge-modern.absent {
+    background: linear-gradient(135deg, var(--danger-50), var(--danger-100));
+    color: var(--danger-700);
+    border: 1px solid var(--danger-200);
+}
+
+/* Session Time - already defined in components.css */
+
+/* Control Buttons Section */
+.control-buttons-section {
+    padding-top: 2rem;
+    border-top: 2px solid var(--gray-100);
+}
+
+.control-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+}
+
+.control-button-modern {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.control-button-modern::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.control-button-modern:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.control-button-modern i {
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.control-button-modern span {
+    position: relative;
+    z-index: 1;
+}
+
+.control-button-pause {
+    background: linear-gradient(135deg, var(--warning-600), var(--warning-500));
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.control-button-pause:hover {
+    background: linear-gradient(135deg, var(--warning-700), var(--warning-600));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+    color: var(--white);
+}
+
+.control-button-resume {
+    background: linear-gradient(135deg, var(--success-600), var(--success-500));
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.control-button-resume:hover {
+    background: linear-gradient(135deg, var(--success-700), var(--success-600));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    color: var(--white);
+}
+
+.control-button-stop {
+    background: linear-gradient(135deg, var(--danger-600), var(--danger-500));
+    color: var(--white);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.control-button-stop:hover {
+    background: linear-gradient(135deg, var(--danger-700), var(--danger-600));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+    color: var(--white);
+}
+
+/* Start Session Card */
+.start-session-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem 1.75rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 2px solid var(--gray-100);
+    text-align: center;
+    animation: fadeInUp 0.6s ease-out;
+    position: relative;
+    overflow: hidden;
+    animation-delay: 0.1s;
+}
+
+.start-session-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--purple-500), var(--blue-500));
+}
+
+.start-session-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1.25rem;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(99, 102, 241, 0.05));
+    color: var(--purple-600);
+    transition: transform 0.3s ease;
+}
+
+.start-session-card:hover .start-session-icon {
+    transform: rotate(-5deg) scale(1.05);
+}
+
+.start-session-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.start-session-description {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.start-button-modern {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-500));
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.start-button-modern::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.start-button-modern:hover::before {
+    width: 400px;
+    height: 400px;
+}
+
+.start-button-modern:hover {
+    background: linear-gradient(135deg, var(--purple-700), var(--purple-600));
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+    color: var(--white);
+}
+
+.start-button-modern i,
+.start-button-modern span {
+    position: relative;
+    z-index: 1;
+}
+
+.start-button-modern i {
+    font-size: 1.2rem;
+}
+
+/* Recent Sessions Section */
+.recent-sessions-section {
+    margin-top: 2rem;
+}
+
+/* Empty State - already defined in components.css */
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .control-buttons-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .control-buttons-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .active-session-card,
+    .start-session-card {
+        padding: 1.5rem;
+    }
+    
+    .session-card-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .session-header-text h5 {
+        font-size: 1.25rem;
+    }
+    
+    .start-session-title {
+        font-size: 1.25rem;
+    }
+    
+    .start-session-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.75rem;
+    }
+    
+    .start-session-description {
+        font-size: 0.9rem;
+        margin-bottom: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .session-header-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .start-session-card {
+        padding: 1.25rem;
+    }
+    
+    .start-session-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .start-session-title {
+        font-size: 1.1rem;
+    }
+    
+    .start-session-description {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    
+    .control-button-modern {
+        padding: 0.85rem 1.25rem;
+        font-size: 0.95rem;
+    }
+    
+    .start-button-modern {
+        padding: 0.85rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .attendance-badge-modern {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.75rem;
+    }
+}
+

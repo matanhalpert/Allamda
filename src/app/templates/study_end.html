@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block title %}End Study Session - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/study-creation.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/study-session.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Page Header Banner -->
+<div class="welcome-banner" style="max-width: 900px; margin: 0 auto 2rem auto;">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">Complete Your Study Session</h1>
+            <p class="welcome-subtitle">
+                Great work! Please share your feedback to help us improve your learning experience
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-check-circle"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid" style="max-width: 900px; margin: 0 auto;">
+    
+    <!-- Session Summary Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-chart-line me-2"></i>Session Summary
+            </h3>
+        </div>
+        
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="study-summary-stat-card">
+                    <div class="study-summary-stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="study-summary-stat-content">
+                        <div class="study-summary-stat-value">{{ duration }}</div>
+                        <div class="study-summary-stat-label">Duration</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="study-summary-stat-card">
+                    <div class="study-summary-stat-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <div class="study-summary-stat-content">
+                        <div class="study-summary-stat-value">{{ message_count }}</div>
+                        <div class="study-summary-stat-label">Messages Exchanged</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feedback Form Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.15s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-clipboard-check me-2"></i>Your Feedback
+            </h3>
+        </div>
+        
+        <form method="POST" action="/study/end/{{ session_id }}" id="feedbackForm">
+            <!-- Emotional State After -->
+            <div class="mb-4">
+                <label class="form-label fw-bold study-creation-label">
+                    <i class="fas fa-heart me-2"></i>How are you feeling now?
+                </label>
+
+                <p class="text-muted small mb-3">
+                    Your emotional state after the session helps us understand the session's impact.
+                </p>
+                
+                <div class="study-mental-state-grid">
+                    {% for state in emotional_states %}
+                    <div>
+                        <input 
+                            type="radio" 
+                            class="btn-check study-mental-state-radio" 
+                            name="emotional_state_after" 
+                            id="state_{{ state.value }}" 
+                            value="{{ state.value }}"
+                            autocomplete="off"
+                            required>
+                        <label class="study-mental-state-card" for="state_{{ state.value }}">
+                            {% if state.value == 'positive' %}
+                                <div class="study-mental-state-icon text-success">
+                                    <i class="fas fa-smile"></i>
+                                </div>
+                                <span class="study-mental-state-label">Positive</span>
+                            {% elif state.value == 'neutral' %}
+                                <div class="study-mental-state-icon text-warning">
+                                    <i class="fas fa-meh"></i>
+                                </div>
+                                <span class="study-mental-state-label">Neutral</span>
+                            {% elif state.value == 'negative' %}
+                                <div class="study-mental-state-icon text-danger">
+                                    <i class="fas fa-frown"></i>
+                                </div>
+                                <span class="study-mental-state-label">Negative</span>
+                            {% elif state.value == 'extreme' %}
+                                <div class="study-mental-state-icon text-dark">
+                                    <i class="fas fa-tired"></i>
+                                </div>
+                                <span class="study-mental-state-label">Extreme</span>
+                            {% endif %}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Difficulty Feedback -->
+            <div class="mb-4">
+                <label for="difficulty_feedback" class="form-label fw-bold study-creation-label">
+                    <i class="fas fa-tachometer-alt me-2"></i>How difficult was the material?
+                </label>
+                <div class="slider-container">
+                    <div class="slider-value" id="difficultyValue">5</div>
+                    <input 
+                        type="range" 
+                        class="form-range" 
+                        id="difficulty_feedback" 
+                        name="difficulty_feedback" 
+                        min="1" 
+                        max="10" 
+                        value="5"
+                        required
+                    >
+                    <div class="d-flex justify-content-between mt-2">
+                        <small class="text-muted">1 - Very Easy</small>
+                        <small class="text-muted">10 - Very Difficult</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Understanding Feedback -->
+            <div class="mb-4">
+                <label for="understanding_feedback" class="form-label fw-bold study-creation-label">
+                    <i class="fas fa-lightbulb me-2"></i>How well did you understand the material?
+                </label>
+                <div class="slider-container">
+                    <div class="slider-value" id="understandingValue">5</div>
+                    <input 
+                        type="range" 
+                        class="form-range" 
+                        id="understanding_feedback" 
+                        name="understanding_feedback" 
+                        min="1" 
+                        max="10" 
+                        value="5"
+                        required
+                    >
+                    <div class="d-flex justify-content-between mt-2">
+                        <small class="text-muted">1 - Didn't Understand</small>
+                        <small class="text-muted">10 - Fully Understood</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Textual Feedback -->
+            <div class="mb-4">
+                <label for="textual_feedback" class="form-label fw-bold study-creation-label">
+                    <i class="fas fa-comment-dots me-2"></i>Additional Comments (Optional)
+                </label>
+                <textarea 
+                    class="form-control study-creation-select" 
+                    id="textual_feedback" 
+                    name="textual_feedback"
+                    rows="4"
+                    placeholder="Share any additional thoughts about this study session..."
+                ></textarea>
+                <div class="study-hint-text">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Tell us about your experience, what worked well, or what could be improved.</span>
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="d-flex gap-3 mt-4 justify-content-center flex-wrap">
+                <button type="submit" class="btn btn-lg study-btn-success">
+                    <i class="fas fa-check-circle me-2"></i>Submit & Complete Session
+                </button>
+                <a href="/study/chat/{{ session_id }}" class="btn btn-lg study-btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Chat
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/study-feedback.js') }}"></script>
+<script>
+// Initialize feedback form
+const feedbackForm = new StudyFeedbackForm();
+</script>
+{% endblock %}
+

@@ -1,0 +1,1415 @@
+/* Study Session Styles */
+
+/* ==========================================
+   SESSION INFO BANNER - Dashboard Style
+   ========================================== */
+.session-info-banner {
+    background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-400) 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: var(--white);
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+    animation: fadeInDown 0.6s ease-out;
+}
+
+.session-banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.session-main-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+    min-width: 300px;
+}
+
+.session-icon {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+    animation: float 3s ease-in-out infinite;
+}
+
+.session-text {
+    flex: 1;
+}
+
+.session-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+}
+
+.session-subtitle {
+    font-size: 1rem;
+    opacity: 0.95;
+    margin: 0;
+    color: var(--white);
+}
+
+.session-stats {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.session-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.stat-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.status-active {
+    background: rgba(16, 185, 129, 0.9);
+    color: var(--white);
+}
+
+.status-paused {
+    background: rgba(245, 158, 11, 0.9);
+    color: var(--white);
+}
+
+.status-ended {
+    background: rgba(107, 114, 128, 0.9);
+    color: var(--white);
+}
+
+/* ==========================================
+   CHAT SECTION - Dashboard Card Style
+   ========================================== */
+.chat-section {
+    animation: fadeInUp 0.6s ease-out;
+    animation-delay: 0.2s;
+    animation-fill-mode: both;
+}
+
+.chat-container-wrapper {
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.chat-container-wrapper:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.chat-header {
+    background: linear-gradient(135deg, var(--white) 0%, var(--gray-50) 100%);
+    border-bottom: 2px solid var(--gray-100);
+    padding: 1.25rem 1.5rem;
+}
+
+.chat-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.chat-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chat-icon {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--purple-500) 0%, var(--purple-400) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.chat-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.chat-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-control {
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    color: var(--white) !important;
+    outline: none !important;
+    text-decoration: none !important;
+    margin: 0 !important;
+    min-width: auto !important;
+    width: auto !important;
+}
+
+.btn-control:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+    color: var(--white) !important;
+    text-decoration: none !important;
+}
+
+.btn-control:active {
+    transform: translateY(0);
+    outline: none !important;
+}
+
+.btn-control:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+    color: var(--white) !important;
+    outline: none !important;
+}
+
+/* Pause Button - Orange */
+.btn-control.btn-warning,
+#pauseResumeButton.btn-warning {
+    background: linear-gradient(135deg, var(--warning-500) 0%, var(--warning-600) 100%) !important;
+    color: var(--white) !important;
+    border-radius: 10px !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.btn-control.btn-warning:hover,
+#pauseResumeButton.btn-warning:hover,
+.btn-control.btn-warning:focus,
+#pauseResumeButton.btn-warning:focus,
+.btn-control.btn-warning:active,
+#pauseResumeButton.btn-warning:active {
+    background: linear-gradient(135deg, var(--warning-600) 0%, var(--warning-500) 100%) !important;
+    color: var(--white) !important;
+    border-radius: 10px !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* Resume Button - Blue */
+.btn-control.btn-success,
+#pauseResumeButton.btn-success {
+    background: linear-gradient(135deg, var(--blue-600) 0%, var(--blue-500) 100%) !important;
+    color: var(--white) !important;
+    border-radius: 10px !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.btn-control.btn-success:hover,
+#pauseResumeButton.btn-success:hover,
+.btn-control.btn-success:focus,
+#pauseResumeButton.btn-success:focus,
+.btn-control.btn-success:active,
+#pauseResumeButton.btn-success:active {
+    background: linear-gradient(135deg, var(--blue-500) 0%, var(--blue-600) 100%) !important;
+    color: var(--white) !important;
+    border-radius: 10px !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0.5rem 1rem !important;
+}
+
+/* Stop Button - Red */
+.btn-control.btn-danger {
+    background: linear-gradient(135deg, var(--danger-500) 0%, var(--danger-600) 100%) !important;
+    color: var(--white) !important;
+    border-radius: 10px !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.btn-control.btn-danger:hover,
+.btn-control.btn-danger:focus,
+.btn-control.btn-danger:active {
+    background: linear-gradient(135deg, var(--danger-600) 0%, var(--danger-500) 100%) !important;
+    color: var(--white) !important;
+    border-radius: 10px !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.chat-body {
+    background: var(--gray-50);
+}
+
+/* Study Page - Learning Units Container */
+.learning-units-scrollable {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Chat Container */
+#chat-container {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid var(--border-primary);
+    border-radius: 0.375rem;
+    padding: 1rem;
+    background-color: var(--gray-50);
+}
+
+/* Custom Scrollbar Styles for Chat Container */
+#chat-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-container::-webkit-scrollbar-track {
+    background: var(--gray-200);
+    border-radius: 10px;
+}
+
+#chat-container::-webkit-scrollbar-thumb {
+    background: var(--gray-500);
+    border-radius: 10px;
+    transition: background 0.2s;
+}
+
+#chat-container::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-700);
+}
+
+/* Firefox */
+#chat-container {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-500) var(--gray-200);
+}
+
+/* Message Styles */
+.message {
+    margin-bottom: 1rem;
+    display: flex;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.message.student {
+    justify-content: flex-end;
+}
+
+.message.teacher {
+    justify-content: flex-start;
+}
+
+.message-bubble {
+    max-width: 70%;
+    min-width: 200px;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    word-wrap: break-word;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.message.student .message-bubble {
+    background-color: var(--color-secondary);
+    color: white;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.message.teacher .message-bubble {
+    background-color: white;
+    border: 1px solid var(--border-primary);
+    color: var(--text-primary);
+    border-bottom-left-radius: 0.25rem;
+}
+
+/* Markdown Content Styles for Teacher Messages */
+.markdown-content {
+    overflow-wrap: break-word;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--text-primary);
+}
+
+.markdown-content h1 {
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--gray-200);
+    padding-bottom: 0.3rem;
+}
+
+.markdown-content h2 {
+    font-size: 1.35rem;
+    border-bottom: 1px solid var(--gray-200);
+    padding-bottom: 0.3rem;
+}
+
+.markdown-content h3 {
+    font-size: 1.2rem;
+}
+
+.markdown-content h4 {
+    font-size: 1.1rem;
+}
+
+.markdown-content h5,
+.markdown-content h6 {
+    font-size: 1rem;
+}
+
+.markdown-content h1:first-child,
+.markdown-content h2:first-child,
+.markdown-content h3:first-child,
+.markdown-content h4:first-child,
+.markdown-content h5:first-child,
+.markdown-content h6:first-child {
+    margin-top: 0;
+}
+
+.markdown-content p {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.markdown-content p:last-child {
+    margin-bottom: 0;
+}
+
+.markdown-content strong {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.markdown-content em {
+    font-style: italic;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+}
+
+.markdown-content ul {
+    list-style-type: disc;
+}
+
+.markdown-content ol {
+    list-style-type: decimal;
+}
+
+.markdown-content li {
+    margin-bottom: 0.25rem;
+    line-height: 1.6;
+}
+
+.markdown-content li > ul,
+.markdown-content li > ol {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.markdown-content code {
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--pink);
+}
+
+.markdown-content pre {
+    background-color: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 5px;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    overflow-x: auto;
+}
+
+.markdown-content pre code {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    display: block;
+}
+
+.markdown-content blockquote {
+    border-left: 4px solid var(--color-secondary);
+    padding-left: 1rem;
+    margin: 0.75rem 0;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.markdown-content a {
+    color: var(--color-secondary);
+    text-decoration: none;
+}
+
+.markdown-content a:hover {
+    text-decoration: underline;
+}
+
+.markdown-content hr {
+    border: 0;
+    border-top: 1px solid var(--border-primary);
+    margin: 1rem 0;
+}
+
+.markdown-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0.75rem 0;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+    border: 1px solid var(--border-primary);
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.markdown-content table th {
+    background-color: var(--gray-50);
+    font-weight: 600;
+}
+
+.markdown-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin: 0.5rem 0;
+}
+
+.message-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+    padding: 0 0.5rem;
+}
+
+/* Message footer - contains timestamp and audio controls (OUTSIDE bubble for teacher) */
+.message-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+    padding: 0 0.5rem;
+    gap: 1rem;
+    max-width: 70%; /* Match message bubble max-width */
+    min-width: 200px; /* Match message bubble min-width */
+}
+
+.message-time {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+    padding: 0 0.5rem;
+}
+
+/* ==========================================
+   CHAT INPUT CONTAINER - Modern Design
+   ========================================== */
+.chat-input-container {
+    padding: 1.5rem;
+    background: var(--white);
+    border-top: 2px solid var(--gray-100);
+}
+
+.attachment-preview {
+    margin-bottom: 1rem;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.attachment-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.input-group-modern {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--gray-50);
+    border: 2px solid var(--border-light);
+    border-radius: 16px;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.input-group-modern:focus-within {
+    border-color: var(--purple-400);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.input-tools {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+.btn-tool {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background: var(--white);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.btn-tool:hover:not(:disabled) {
+    background: var(--purple-50);
+    color: var(--purple-500);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-tool:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-tool:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.message-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    resize: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: var(--text-primary);
+    overflow-y: auto;
+    max-height: 120px;
+    line-height: 1.5;
+    min-height: 40px;
+    align-self: center;
+}
+
+.message-input:focus {
+    outline: none;
+}
+
+.message-input::placeholder {
+    color: var(--text-muted);
+}
+
+/* Custom Scrollbar for Message Input */
+.message-input::-webkit-scrollbar {
+    width: 6px;
+}
+
+.message-input::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.message-input::-webkit-scrollbar-thumb {
+    background: var(--gray-400);
+    border-radius: 10px;
+}
+
+.message-input::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-500);
+}
+
+.message-input {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-400) transparent;
+}
+
+.btn-send {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-400) 100%);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 8px rgba(79, 70, 229, 0.3);
+}
+
+.btn-send:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(79, 70, 229, 0.4);
+}
+
+.btn-send:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.input-hint {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Disable resize on textareas in feedback forms */
+#textual_feedback {
+    resize: none;
+    min-height: 120px;
+    height: 120px;
+}
+
+/* Session Info Card */
+.session-info-card {
+    background: linear-gradient(135deg, var(--purple-400) 0%, var(--purple-300) 100%);
+    color: white;
+    border: none;
+}
+
+/* Course name styling in session info */
+.course-name-light {
+    color: #FFFFFF;
+}
+
+/* Book icon next to course name */
+.session-info-card h4 .fa-book-open {
+    color: #FFFFFF;
+}
+
+/* Learning units paragraph - dark color */
+.session-info-card p {
+    color: #2D3748;
+}
+
+.status-badge {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+}
+
+#sendButton:disabled, #pauseResumeButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Typing Indicator */
+.typing-indicator {
+    display: none;
+    padding: 0.75rem 1rem;
+}
+
+.typing-indicator span {
+    height: 8px;
+    width: 8px;
+    background-color: var(--gray-500);
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    animation: typing 1.4s infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+/* Attachment preview area */
+#attachmentPreview {
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+#attachmentList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Attachment display in messages */
+.message-attachments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Image attachments with thumbnails */
+.attachment-image {
+    max-width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.attachment-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.attachment-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: pointer;
+}
+
+/* Non-image file attachments */
+.attachment-file {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.2s;
+}
+
+.attachment-file:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+}
+
+.student .attachment-file {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.student .attachment-file:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Legacy attachment-item styles (for backward compatibility) */
+.attachment-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.6rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0.25rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s;
+    font-size: 0.9rem;
+}
+
+.attachment-item:hover {
+    background: rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+}
+
+.student .attachment-item {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.student .attachment-item:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+@keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-10px); }
+}
+
+/* Study End - Feedback Sliders */
+.slider-container {
+    padding: 1rem 0;
+}
+
+.slider-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-secondary);
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+input[type="range"] {
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: linear-gradient(to right, var(--danger-500) 0%, var(--warning-500) 50%, var(--success-500) 100%);
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+input[type="range"]:hover {
+    opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    border: none;
+}
+
+/* Session Summary Card */
+.session-summary-card {
+    background: linear-gradient(135deg, var(--purple-400) 0%, var(--purple-300) 100%);
+    color: white;
+    border: none;
+}
+
+.summary-stat {
+    text-align: center;
+    padding: 1rem;
+}
+
+.summary-stat i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.summary-stat .stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    display: block;
+}
+
+.summary-stat .stat-label {
+    font-size: 0.9rem;
+    display: block;
+    color: var(--white);
+    font-weight: 500;
+}
+
+/* Voice Recording Styles */
+
+/* Voice button recording state */
+#voiceButton.recording {
+    background-color: var(--danger-500);
+    color: white;
+    border-color: var(--danger-500);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Voice Recording Modal */
+.voice-recording-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.voice-recording-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.voice-recording-content {
+    position: relative;
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+}
+
+.recording-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.recording-header h5 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+.recording-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Recording Timer */
+.recording-timer {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--color-secondary);
+    font-family: 'Courier New', monospace;
+}
+
+/* Waveform Animation */
+.waveform-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 80px;
+}
+
+.waveform-bar {
+    width: 8px;
+    background: linear-gradient(to top, var(--color-secondary), var(--purple-400));
+    border-radius: 4px;
+    animation: waveform 1s ease-in-out infinite;
+}
+
+.waveform-bar:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.waveform-bar:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.waveform-bar:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.waveform-bar:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+.waveform-bar:nth-child(5) {
+    animation-delay: 0.4s;
+}
+
+@keyframes waveform {
+    0%, 100% {
+        height: 20px;
+    }
+    50% {
+        height: 80px;
+    }
+}
+
+/* Recording Status */
+.recording-status {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin: 0;
+    text-align: center;
+}
+
+/* Recording Footer */
+.recording-footer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.recording-footer .btn {
+    min-width: 120px;
+    font-weight: 600;
+}
+
+/* TTS Audio Controls */
+
+/* Audio controls container - small and compact, next to timestamp */
+.message-audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+}
+
+/* Show controls on hover over the teacher message */
+.message.teacher:hover .message-audio-controls {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Keep controls visible if audio is playing */
+.message-audio-controls.playing {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Audio control buttons - small and compact */
+.audio-control-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.7rem; /* Match timestamp size */
+    padding: 0.15rem;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.1s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.audio-control-btn:hover {
+    color: var(--color-secondary);
+    transform: scale(1.15);
+}
+
+.audio-control-btn:active {
+    transform: scale(0.9);
+}
+
+.audio-control-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Loading button - pointer events disabled, normal cursor */
+.audio-control-btn.loading-btn {
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Progress bar container - compact version */
+.audio-progress-bar {
+    width: 60px; /* Fixed compact width */
+    height: 3px;
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+
+.audio-progress-bar:hover {
+    height: 4px;
+}
+
+/* Progress fill */
+.audio-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, var(--color-secondary), var(--purple-400));
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+/* ==========================================
+   ANIMATIONS - Dashboard Style
+   ========================================== */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN - Dashboard Style
+   ========================================== */
+@media (max-width: 1200px) {
+    .session-title {
+        font-size: 1.5rem;
+    }
+    
+    .session-subtitle {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .session-info-banner {
+        padding: 1.5rem;
+    }
+    
+    .session-banner-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .session-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .chat-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .chat-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .session-info-banner {
+        padding: 1.25rem;
+        border-radius: 16px;
+    }
+    
+    .session-main-info {
+        min-width: 0;
+        width: 100%;
+    }
+    
+    .session-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .session-title {
+        font-size: 1.25rem;
+    }
+    
+    .session-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .session-stats {
+        gap: 1rem;
+    }
+    
+    .stat-value {
+        font-size: 1rem;
+    }
+    
+    .chat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+    
+    .chat-title {
+        font-size: 1.1rem;
+    }
+    
+    .btn-control {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    .chat-input-container {
+        padding: 1rem;
+    }
+    
+    .input-group-modern {
+        flex-wrap: wrap;
+        padding: 0.6rem;
+    }
+    
+    .input-tools {
+        order: 2;
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .message-input {
+        order: 1;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .btn-send {
+        order: 3;
+    }
+    
+    #chat-container {
+        height: 320px;
+    }
+}
+
+@media (max-width: 576px) {
+    .session-info-banner {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .session-banner-content {
+        gap: 1rem;
+    }
+    
+    .session-main-info {
+        gap: 1rem;
+    }
+    
+    .session-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.25rem;
+    }
+    
+    .session-title {
+        font-size: 1.1rem;
+    }
+    
+    .session-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .session-stats {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .chat-header {
+        padding: 1rem;
+    }
+    
+    .chat-input-container {
+        padding: 0.75rem;
+    }
+    
+    .btn-tool {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    
+    .btn-send {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .input-hint {
+        font-size: 0.75rem;
+    }
+    
+    #chat-container {
+        height: 280px;
+    }
+}
+

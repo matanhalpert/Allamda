@@ -1,0 +1,269 @@
+/* Analytics Dashboard Styles */
+
+/* Analytics-specific Stats Grid Override */
+.dashboard-section.stats-section .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+}
+
+.dashboard-section.stats-section .stat-card {
+    min-height: auto;
+    padding: 1rem;
+}
+
+.dashboard-section.stats-section .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+}
+
+.dashboard-section.stats-section .stat-value {
+    font-size: 1.5rem;
+}
+
+.dashboard-section.stats-section .stat-label {
+    font-size: 0.8rem;
+}
+
+/* Time Filter Container */
+.time-filter-container {
+    margin-top: 1rem;
+}
+
+.time-filter-container .form-select {
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid var(--gray-200);
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.time-filter-container .form-select:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.time-filter-container .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    outline: none;
+}
+
+/* Chart Container Styles */
+.chart-container {
+    position: relative;
+    width: 100%;
+    min-height: 400px;
+    padding: 0.5rem;
+}
+
+.chart-container .plotly {
+    width: 100%;
+    height: 100%;
+}
+
+/* School Information Grid */
+.school-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.school-info-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.school-info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.school-info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    border-color: var(--primary-color);
+}
+
+.school-info-card:hover::before {
+    transform: scaleX(1);
+}
+
+.info-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.info-card-header i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(155, 89, 182, 0.1));
+    border-radius: 10px;
+}
+
+.info-card-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.3px;
+}
+
+.info-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.info-key {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    /* Switch to 2x2 grid on smaller desktops */
+    .dashboard-section.stats-section .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .chart-container {
+        min-height: 350px;
+    }
+    
+    /* Stack stats and time filter on tablets and below */
+    .dashboard-grid > .dashboard-section[style*="span 9"],
+    .dashboard-grid > .dashboard-section[style*="span 3"] {
+        grid-column: span 12 !important;
+    }
+    
+    /* Keep 2x2 grid for KPI cards */
+    .dashboard-section.stats-section .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .time-filter-container .form-select {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .chart-container {
+        min-height: 300px;
+        padding: 0.25rem;
+    }
+    
+    .school-info-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .school-info-card {
+        padding: 1.25rem;
+    }
+    
+    .info-card-header i {
+        width: 35px;
+        height: 35px;
+        font-size: 1.25rem;
+    }
+    
+    .info-card-label {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Single column for KPI cards on mobile */
+    .dashboard-section.stats-section .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .chart-container {
+        min-height: 250px;
+    }
+    
+    .info-card-header {
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    .info-item {
+        gap: 0.15rem;
+    }
+    
+    .info-key {
+        font-size: 0.75rem;
+    }
+    
+    .info-value {
+        font-size: 0.95rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .time-filter-container {
+        display: none;
+    }
+    
+    .dashboard-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .school-info-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .chart-container {
+        min-height: 350px;
+    }
+}

@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Classroom Sessions - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/classroom.css') }}" rel="stylesheet">
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hidden user data for WebSocket -->
+<div data-user-id="{{ user.id }}" 
+     data-user-type="{{ user.user_type }}" 
+     style="display: none;"></div>
+
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">Classroom Session Management</h1>
+            <p class="welcome-subtitle">
+                {% if has_active_session %}
+                    Monitor and manage active classroom sessions
+                {% else %}
+                    Start a new school study session for all students in your class
+                {% endif %}
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid classroom-container">
+
+    <!-- Active Session Section -->
+    {% if has_active_session %}
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="active-session-card">
+            <div class="session-card-header">
+                <div class="session-header-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="session-header-text">
+                    <h5>Active Sessions Management</h5>
+                </div>
+            </div>
+
+            <div class="sessions-table-wrapper">
+                <table class="sessions-table-modern">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Student</th>
+                            <th style="text-align: left;">Course</th>
+                            <th>Status</th>
+                            <th>Attendance</th>
+                            <th>Started</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for session_info in active_session_data %}
+                        <tr>
+                            <td class="student-name-cell">{{ session_info.student_name }}</td>
+                            <td class="course-name-cell">{{ session_info.course_name or 'N/A' }}</td>
+                            <td>
+                                {% if session_info.status == 'PENDING' %}
+                                    <span class="status-badge-modern status-pending">
+                                        <i class="fas fa-clock"></i>
+                                        <span>Pending</span>
+                                    </span>
+                                {% elif session_info.status == 'ACTIVE' %}
+                                    <span class="status-badge-modern status-active">
+                                        <i class="fas fa-play"></i>
+                                        <span>Active</span>
+                                    </span>
+                                {% elif session_info.status == 'PAUSED' %}
+                                    <span class="status-badge-modern status-paused">
+                                        <i class="fas fa-pause"></i>
+                                        <span>Paused</span>
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge-modern status-default">
+                                        <span>{{ session_info.status }}</span>
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if session_info.is_attendant %}
+                                    <span class="attendance-badge-modern present">
+                                        <i class="fas fa-check"></i>
+                                        <span>Present</span>
+                                    </span>
+                                {% else %}
+                                    <span class="attendance-badge-modern absent">
+                                        <i class="fas fa-times"></i>
+                                        <span>Absent</span>
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="session-time">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ session_info.start_time.strftime('%I:%M %p') }}</span>
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bulk Action Controls -->
+            <div class="control-buttons-section">
+                <div class="control-buttons-grid">
+                    <button type="button" class="control-button-modern control-button-pause" 
+                            onclick="window.classroomWS.forcePauseAll()" 
+                            title="Pause all active sessions">
+                        <i class="fas fa-pause"></i>
+                        <span>Force Pause</span>
+                    </button>
+                    <button type="button" class="control-button-modern control-button-resume" 
+                            onclick="window.classroomWS.forceResumeAll()" 
+                            title="Resume all paused sessions">
+                        <i class="fas fa-play"></i>
+                        <span>Force Resume</span>
+                    </button>
+                    <button type="button" class="control-button-modern control-button-stop" 
+                            onclick="window.classroomWS.forceStopAll()" 
+                            title="Stop all sessions">
+                        <i class="fas fa-stop"></i>
+                        <span>Force Stop</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- Start New Session Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="start-session-card">
+            <div class="start-session-icon">
+                <i class="fas fa-plus-circle"></i>
+            </div>
+            <h2 class="start-session-title">Ready to Start a Session?</h2>
+            <p class="start-session-description">
+                Start a new school study session for all students in your class.
+                The system will automatically select the best course and learning units based on each student's progress and needs.
+            </p>
+            <form method="POST" action="{{ url_for('class_manager.start_classroom_session') }}">
+                <button type="submit" class="start-button-modern">
+                    <i class="fas fa-play"></i>
+                    <span>Start New School Session</span>
+                </button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Recent Sessions Section -->
+    <div class="dashboard-section recent-sessions-section" style="grid-column: span 12; animation-delay: 0.2s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-history me-2"></i>Recent Sessions
+            </h3>
+        </div>
+        {% set show_student_column = true %}
+        {% set empty_message = "No completed study sessions yet. Recent sessions from your students (both school and home) will appear here." %}
+        {% include 'components/_recent_sessions.html' with context %}
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Classroom Modules - Load in dependency order -->
+<script src="{{ url_for('static', filename='js/classroom-ui.js') }}"></script>
+<script src="{{ url_for('static', filename='js/classroom-controls.js') }}"></script>
+<script src="{{ url_for('static', filename='js/classroom-websocket.js') }}"></script>
+{% endblock %}
+

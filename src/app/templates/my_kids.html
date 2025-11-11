@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}My Kids - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/my-kids.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Welcome Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">My Kids</h1>
+            <p class="welcome-subtitle">
+                {% if children %}
+                    Monitor the progress and performance of {{ children|length }} {% if children|length == 1 %}student{% else %}students{% endif %}
+                {% else %}
+                    Your student dashboard
+                {% endif %}
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-user-group"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Children Cards -->
+{% if children %}
+<div class="children-grid">
+    {% for child in children %}
+    <a href="/student/{{ child.id }}" class="child-card-modern">
+        <div class="child-card-body">
+            <!-- Child Header -->
+            <div class="child-header-section">
+                <div class="child-avatar-modern">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="child-info">
+                    <h5 class="child-name">{{ child.full_name }}</h5>
+                    <div class="child-id">Student ID: {{ child.id }}</div>
+                </div>
+            </div>
+
+            <!-- Child Stats -->
+            <div class="child-stats-grid">
+                <!-- Average Grade -->
+                <div class="child-stat-item">
+                    <div class="stat-icon-modern stat-primary">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <div class="child-stat-content">
+                        <div class="child-stat-label">Avg Grade</div>
+                        {% if child.average_grade is not none %}
+                        <div class="child-stat-value {% if child.average_grade >= 70 %}value-success{% else %}value-danger{% endif %}">
+                            {{ child.average_grade }}
+                        </div>
+                        {% else %}
+                        <div class="child-stat-value value-muted">N/A</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Attendance -->
+                <div class="child-stat-item">
+                    <div class="stat-icon-modern stat-success">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="child-stat-content">
+                        <div class="child-stat-label">Attendance</div>
+                        {% if child.school_attendance is not none %}
+                        <div class="child-stat-value {% if child.school_attendance >= 85 %}value-success{% elif child.school_attendance >= 70 %}value-warning{% else %}value-danger{% endif %}">
+                            {{ child.school_attendance }}%
+                        </div>
+                        {% else %}
+                        <div class="child-stat-value value-muted">N/A</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Courses -->
+                <div class="child-stat-item">
+                    <div class="stat-icon-modern stat-info">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="child-stat-content">
+                        <div class="child-stat-label">Courses</div>
+                        <div class="child-stat-value value-info">
+                            {{ child.total_courses }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overall Progress -->
+            <div class="child-progress-section">
+                <div class="progress-header">
+                    <span class="progress-label">Overall Progress</span>
+                    <span class="progress-percentage">{{ child.overall_progress }}%</span>
+                </div>
+                <div class="progress-bar-modern">
+                    <div class="progress-bar-fill" style="width: {{ child.overall_progress }}%"></div>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<!-- Empty State -->
+<div class="empty-state-modern">
+    <div class="empty-state-icon">
+        <i class="fas fa-users"></i>
+    </div>
+    <h4 class="empty-state-title">No Children Found</h4>
+    <p class="empty-state-text">
+        No student records are associated with your account. Please contact your school administrator if you believe this is an error.
+    </p>
+</div>
+{% endif %}
+
+{% endblock %}
+

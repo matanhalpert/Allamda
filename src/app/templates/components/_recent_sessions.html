@@ -1,0 +1,100 @@
+{#
+    Shared template for displaying recent study sessions
+    
+    Parameters:
+    - recent_sessions: list of session dictionaries
+    - show_student_column: boolean, whether to show the student name column (for class managers)
+    - empty_message: message to display when there are no sessions
+#}
+
+{% if recent_sessions %}
+<div class="sessions-table-wrapper">
+    <table class="sessions-table-modern">
+        <thead>
+            <tr>
+                {% if show_student_column %}
+                <th class="col-center">Student</th>
+                {% endif %}
+                <th class="col-center">Date</th>
+                <th class="col-center">Type</th>
+                <th class="col-center">Course</th>
+                <th class="col-center">Duration</th>
+                <th class="col-center">Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for session in recent_sessions %}
+            <tr>
+                {% if show_student_column %}
+                <td class="col-center student-name-cell">
+                    <i class="fas fa-user me-2"></i>
+                    {{ session.student_name }}
+                </td>
+                {% endif %}
+                <td class="col-center">
+                    <div class="session-date-cell">
+                        <span class="session-date-primary">
+                            <i class="fas fa-calendar me-1"></i>
+                            {{ session.start_time.strftime('%b %d, %Y') }}
+                        </span>
+                        <small class="session-date-time">{{ session.start_time.strftime('%I:%M %p') }}</small>
+                    </div>
+                </td>
+                <td class="col-center">
+                    <div class="session-type-cell">
+                        <span class="session-category-badge {% if session.session_category == 'School Hours' %}category-school{% elif session.session_category == 'Home Hours' %}category-home{% else %}category-default{% endif %}">
+                            <i class="fas {% if session.session_category == 'School Hours' %}fa-school{% elif session.session_category == 'Home Hours' %}fa-home{% else %}fa-circle{% endif %}"></i>
+                            <span>{{ session.session_category }}</span>
+                        </span>
+                        <small class="session-type-label">{{ session.session_type }}</small>
+                    </div>
+                </td>
+                <td class="col-center course-name-cell">
+                    {% if session.course_name %}
+                        <div class="course-info-cell">
+                            <span class="course-name-primary">{{ session.course_name }}</span>
+                            <small class="course-subject-label">{{ session.course_subject }}</small>
+                        </div>
+                    {% else %}
+                        <span class="text-muted">N/A</span>
+                    {% endif %}
+                </td>
+                <td class="col-center">
+                    {% if session.duration_minutes %}
+                        <span class="session-time">
+                            <i class="fas fa-clock"></i>
+                            <span>
+                                {% if session.duration_minutes < 60 %}
+                                    {{ session.duration_minutes }} min
+                                {% else %}
+                                    {{ (session.duration_minutes // 60) }}h {{ (session.duration_minutes % 60) }}m
+                                {% endif %}
+                            </span>
+                        </span>
+                    {% else %}
+                        <span class="text-muted">-</span>
+                    {% endif %}
+                </td>
+                <td class="col-center">
+                    <a href="{{ url_for('shared.session_details', session_id=session.id) }}" 
+                       class="action-button-modern" 
+                       title="View Session Details">
+                        <i class="fas fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<div class="empty-state-modern">
+    <div class="empty-state-icon">
+        <i class="fas fa-clock"></i>
+    </div>
+    <h4 class="empty-state-title">No Sessions Yet</h4>
+    <p class="empty-state-text">{{ empty_message }}</p>
+</div>
+{% endif %}
+

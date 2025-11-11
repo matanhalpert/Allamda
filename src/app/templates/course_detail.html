@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.name }} - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/my-courses.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/course-detail.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Back Button -->
+<div class="back-button-container">
+    <a href="javascript:history.back()" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to {{ back_label }}</span>
+    </a>
+</div>
+
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">{{ course.name }}</h1>
+            <p class="welcome-subtitle">
+                {{ course.subject_name.replace('_', ' ').title() }} • Grade {{ course.grade_level }}
+                {% if course.level %} • Level {{ course.level }}{% endif %}
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas 
+                {% if 'math' in course.subject_name.lower() %}fa-calculator
+                {% elif 'science' in course.subject_name.lower() %}fa-flask
+                {% elif 'biology' in course.subject_name.lower() %}fa-dna
+                {% elif 'physics' in course.subject_name.lower() %}fa-atom
+                {% elif 'chemistry' in course.subject_name.lower() %}fa-vial
+                {% elif 'english' in course.subject_name.lower() %}fa-pen-fancy
+                {% elif 'literature' in course.subject_name.lower() %}fa-book
+                {% elif 'history' in course.subject_name.lower() %}fa-landmark
+                {% elif 'social' in course.subject_name.lower() %}fa-globe
+                {% elif 'computer' in course.subject_name.lower() %}fa-laptop-code
+                {% elif 'art' in course.subject_name.lower() %}fa-palette
+                {% elif 'music' in course.subject_name.lower() %}fa-music
+                {% else %}fa-book-open{% endif %}">
+            </i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+    
+    <!-- Course Header Card -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="course-header-card">
+            <div class="course-header-main">
+                <div class="course-header-icon">
+                    <i class="fas 
+                        {% if 'math' in course.subject_name.lower() %}fa-calculator
+                        {% elif 'science' in course.subject_name.lower() %}fa-flask
+                        {% elif 'biology' in course.subject_name.lower() %}fa-dna
+                        {% elif 'physics' in course.subject_name.lower() %}fa-atom
+                        {% elif 'chemistry' in course.subject_name.lower() %}fa-vial
+                        {% elif 'english' in course.subject_name.lower() %}fa-pen-fancy
+                        {% elif 'literature' in course.subject_name.lower() %}fa-book
+                        {% elif 'history' in course.subject_name.lower() %}fa-landmark
+                        {% elif 'social' in course.subject_name.lower() %}fa-globe
+                        {% elif 'computer' in course.subject_name.lower() %}fa-laptop-code
+                        {% elif 'art' in course.subject_name.lower() %}fa-palette
+                        {% elif 'music' in course.subject_name.lower() %}fa-music
+                        {% else %}fa-book-open{% endif %}">
+                    </i>
+                </div>
+                <div class="course-header-info">
+                    <h2 class="course-title">{{ course.name }}</h2>
+                    <div class="course-badges">
+                        <span class="course-badge-modern badge-subject">
+                            <i class="fas fa-tag"></i>
+                            {{ course.subject_name.replace('_', ' ').title() }}
+                        </span>
+                        <span class="course-badge-modern badge-type">
+                            <i class="fas fa-bookmark"></i>
+                            {{ course.type.replace('_', ' ').title() }}
+                        </span>
+                        <span class="course-badge-modern badge-grade">
+                            <i class="fas fa-layer-group"></i>
+                            Grade {{ course.grade_level }}
+                        </span>
+                        {% if course.level %}
+                        <span class="course-badge-modern badge-level">
+                            <i class="fas fa-signal"></i>
+                            Level {{ course.level }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="course-stats-row">
+                <div class="course-stat-item">
+                    <div class="stat-label">Status</div>
+                    <div class="stat-value">
+                        <span class="status-badge-modern 
+                            {% if course.state == 'not started' %}status-not-started
+                            {% elif course.state == 'in progress' %}status-in-progress
+                            {% else %}status-completed{% endif %}">
+                            <span class="status-dot"></span>
+                            {% if course.state == 'not started' %}Not Started
+                            {% elif course.state == 'in progress' %}In Progress
+                            {% else %}Completed{% endif %}
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="course-stat-item">
+                    <div class="stat-label">Overall Progress</div>
+                    <div class="stat-value">{{ course.progress }}%</div>
+                    <div class="course-progress-stat">
+                        <div class="progress-bar-large">
+                            <div class="progress-fill-large {% if course.progress == 100 %}progress-completed{% endif %}" 
+                                 style="width: {{ course.progress }}%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-stat-item">
+                    <div class="stat-label">Learning Units</div>
+                    <div class="stat-value">
+                        <i class="fas fa-puzzle-piece me-2"></i>{{ course.learning_units|length }}
+                    </div>
+                </div>
+            </div>
+            
+            {% if course.description %}
+            <div class="course-description-section">
+                <div class="description-title">
+                    <i class="fas fa-info-circle"></i>
+                    Description
+                </div>
+                <p class="description-text">{{ course.description }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Learning Units Section -->
+    <div class="dashboard-section learning-units-section" style="animation-delay: 0.2s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-puzzle-piece me-2"></i>Learning Units
+            </h3>
+            <span class="badge bg-primary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ course.learning_units|length }}
+            </span>
+        </div>
+        
+        {% if course.learning_units %}
+        <div class="learning-units-grid">
+            {% for unit in course.learning_units %}
+            <div class="learning-unit-card">
+                <div class="unit-header">
+                    <div class="unit-title-section">
+                        <h4 class="unit-title">
+                            <span class="unit-icon">
+                                <i class="fas fa-puzzle-piece"></i>
+                            </span>
+                            {{ unit.name }}
+                        </h4>
+                        <div class="unit-badges">
+                            <span class="unit-badge type-badge">
+                                <i class="fas fa-bookmark"></i>
+                                {{ unit.type.replace('_', ' ').title() }}
+                            </span>
+                            <span class="unit-badge weight-badge">
+                                <i class="fas fa-weight"></i>
+                                {{ (unit.weight * 100)|round(1) }}% weight
+                            </span>
+                        </div>
+                    </div>
+                    <div class="unit-status-badge 
+                        {% if unit.state == 'not started' %}status-not-started
+                        {% elif unit.state == 'in progress' %}status-in-progress
+                        {% else %}status-completed{% endif %}">
+                        {% if unit.state == 'not started' %}Not Started
+                        {% elif unit.state == 'in progress' %}In Progress
+                        {% else %}Completed{% endif %}
+                    </div>
+                </div>
+                
+                {% if unit.description %}
+                <p class="unit-description">{{ unit.description }}</p>
+                {% endif %}
+                
+                <div class="unit-progress-section">
+                    <div class="unit-progress-header">
+                        <span class="progress-label">
+                            <i class="fas fa-chart-line"></i>
+                            Progress
+                        </span>
+                        <span class="progress-percentage">{{ unit.progress }}%</span>
+                    </div>
+                    <div class="unit-progress-bar">
+                        <div class="unit-progress-fill {% if unit.progress == 100 %}progress-completed{% endif %}" 
+                             style="width: {{ unit.progress }}%">
+                        </div>
+                    </div>
+                </div>
+                
+                {% if unit.previous_learning_unit or unit.next_learning_unit %}
+                <div class="unit-navigation">
+                    {% if unit.previous_learning_unit %}
+                    <div class="unit-nav-item previous">
+                        <div class="nav-label">
+                            <i class="fas fa-arrow-left"></i>
+                            Previous
+                        </div>
+                        <div class="nav-unit-name">{{ unit.previous_learning_unit }}</div>
+                    </div>
+                    {% endif %}
+                    {% if unit.next_learning_unit %}
+                    <div class="unit-nav-item next">
+                        <div class="nav-label">
+                            Next
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="nav-unit-name">{{ unit.next_learning_unit }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state-modern">
+            <div class="empty-state-icon">
+                <i class="fas fa-puzzle-piece"></i>
+            </div>
+            <div class="empty-state-title">No Learning Units</div>
+            <p class="empty-state-text">No learning units available for this course yet.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Upcoming Tests Section -->
+    {% if course.upcoming_tests %}
+    <div class="dashboard-section tests-section upcoming" style="animation-delay: 0.3s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-calendar-check me-2"></i>Upcoming Tests
+            </h3>
+            <span class="badge bg-warning text-dark" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ course.upcoming_tests|length }}
+            </span>
+        </div>
+        
+        {% set upcoming_tests = course.upcoming_tests %}
+        {% include '_upcoming_tests.html' %}
+    </div>
+    {% endif %}
+
+    <!-- Test History Section -->
+    {% if course.test_history %}
+    <div class="dashboard-section tests-section history" style="animation-delay: 0.4s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-history me-2"></i>Test History
+            </h3>
+            <span class="badge bg-secondary" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                {{ course.test_history|length }}
+            </span>
+        </div>
+        
+        {% set test_history = course.test_history %}
+        {% include '_test_history.html' %}
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
+

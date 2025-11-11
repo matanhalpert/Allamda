@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}My Study Sessions - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/study-hub.css') }}" rel="stylesheet">
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hidden user data for WebSocket -->
+<div data-user-id="{{ user.id }}" 
+     data-user-type="{{ user.user_type }}" 
+     data-class-id="{{ user.class_id if user.class_id else '' }}" 
+     style="display: none;"></div>
+
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">My Study Sessions</h1>
+            <p class="welcome-subtitle">
+                {% if active_session %}
+                    Continue your active session or start a new one
+                {% else %}
+                    Start a new study session at home or join your teacher's session
+                {% endif %}
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-book-reader"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+
+<!-- Active Session Section -->
+{% if active_session %}
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="active-session-alert">
+            <div class="active-session-header">
+                <div class="active-session-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="active-session-text">
+                    <h5 class="active-session-title">Active Study Session</h5>
+                    <p class="active-session-description">
+                        You have an active study session in progress. Continue where you left off!
+                    </p>
+                </div>
+            </div>
+            <div class="active-session-actions">
+                <a href="/study/chat/{{ active_session.id }}" class="continue-button-modern">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>Continue Active Session</span>
+                    </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Start New Session Section -->
+    {% if not active_session %}
+    <div class="dashboard-section study-options-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-plus-circle me-2"></i>Start a New Session
+            </h3>
+        </div>
+
+        <div class="study-options-grid">
+            <!-- Home Study Session Card -->
+            <div class="study-option-card study-card-home">
+                <div class="study-card-icon-wrapper">
+                    <div class="study-card-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                </div>
+                <h5 class="study-card-title">Home Study</h5>
+                <p class="study-card-description">
+                    Choose your course and study at your own pace with personalized AI guidance.
+                </p>
+                <a href="/study/new/session-type" class="study-button-home">
+                    <i class="fas fa-play"></i>
+                    <span>Start Home Session</span>
+                </a>
+            </div>
+
+            <!-- School Study Session Card -->
+            <div class="study-option-card study-card-school {% if pending_school_session %}study-card-available{% endif %}">
+                <div class="study-card-icon-wrapper">
+                    <div class="study-card-icon">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    {% if pending_school_session %}
+                    <div class="availability-badge">
+                        <i class="fas fa-circle"></i>
+                        <span>Available</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <h5 class="study-card-title">School Study</h5>
+                {% if pending_school_session %}
+                <p class="study-card-description">
+                    Your teacher has started a class session! Click below to join now.
+                </p>
+                <a href="/study/join/{{ pending_school_session.id }}" class="study-button-school">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Join School Session</span>
+                </a>
+                {% else %}
+                <p class="study-card-description">
+                    No school session available at the moment. Your teacher will start one during class time.
+                </p>
+                <button class="study-button-disabled" disabled>
+                    <i class="fas fa-clock"></i>
+                    <span>Waiting for Teacher</span>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Recent Sessions Section -->
+    <div class="dashboard-section recent-sessions-section" style="grid-column: span 12; animation-delay: 0.2s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-history me-2"></i>Recent Sessions
+            </h3>
+        </div>
+{% set show_student_column = false %}
+{% set empty_message = "You haven't completed any study sessions yet. Start your first session to begin tracking your progress!" %}
+{% include 'components/_recent_sessions.html' with context %}
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/study-hub.js') }}"></script>
+{% endblock %}
+

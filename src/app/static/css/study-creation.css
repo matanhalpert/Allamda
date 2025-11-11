@@ -1,0 +1,416 @@
+/* Study Session Creation Pages Styles */
+/* For: study_new_session_type.html, study_new_course.html, study_new_mental_state.html */
+
+/* ==========================================
+   FORM CONTROLS - Modern Style
+   ========================================== */
+.study-creation-select {
+    border-radius: 12px;
+    border: 2px solid var(--gray-300);
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.study-creation-select:focus {
+    border-color: var(--purple-400);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.study-creation-label {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+/* ==========================================
+   INFO BOXES - Gradient Style
+   ========================================== */
+.study-info-box {
+    border-radius: 12px;
+    border-left: 4px solid var(--blue-600);
+    background: linear-gradient(135deg, var(--white) 0%, var(--blue-50) 100%);
+}
+
+.study-info-box .info-icon {
+    font-size: 1.5rem;
+    color: var(--blue-600);
+}
+
+.study-info-box .info-title {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.study-info-box .info-text {
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   HINT TEXT - Icon + Text Style
+   ========================================== */
+.study-hint-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+/* ==========================================
+   NAVIGATION BUTTONS - Consistent Style
+   ========================================== */
+.study-btn-primary {
+    min-width: 200px;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--purple-600) 0%, var(--purple-400) 100%);
+    border: none;
+    box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+    transition: all 0.3s ease;
+    color: var(--white);
+}
+
+.study-btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(99, 102, 241, 0.4);
+    color: var(--white);
+}
+
+.study-btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.study-btn-secondary {
+    min-width: 150px;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border: 2px solid var(--gray-400);
+    transition: all 0.3s ease;
+}
+
+.study-btn-secondary:hover {
+    border-color: var(--gray-600);
+    background-color: var(--gray-100);
+    transform: translateY(-1px);
+}
+
+.study-btn-cancel {
+    min-width: 120px;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border: 2px solid var(--gray-400);
+    transition: all 0.3s ease;
+}
+
+.study-btn-cancel:hover {
+    border-color: var(--gray-600);
+    background-color: var(--gray-100);
+    transform: translateY(-1px);
+}
+
+.study-btn-success {
+    min-width: 240px;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--success-500) 0%, var(--success-600) 100%);
+    border: none;
+    box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+    transition: all 0.3s ease;
+    color: var(--white);
+}
+
+.study-btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4);
+    color: var(--white);
+}
+
+/* ==========================================
+   PROGRESS INDICATOR - Subtle Background Info
+   ========================================== */
+.study-progress-indicator {
+    background: transparent;
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--gray-200);
+}
+
+.study-progress-step {
+    text-align: center;
+    flex: 1;
+}
+
+.study-progress-step-icon {
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+    opacity: 0.6;
+}
+
+.study-progress-step-icon.active {
+    color: var(--text-secondary);
+    opacity: 0.8;
+}
+
+.study-progress-step-icon.completed {
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.study-progress-step-icon.inactive {
+    color: var(--gray-400);
+    opacity: 0.4;
+}
+
+.study-progress-step-label {
+    font-size: 0.7rem;
+}
+
+.study-progress-step-label.active {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.study-progress-step-label.completed {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.study-progress-step-label.inactive {
+    color: var(--gray-400);
+    font-weight: 400;
+}
+
+.study-progress-bar {
+    height: 3px;
+    background-color: var(--gray-200);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.study-progress-bar-fill {
+    height: 100%;
+    background: var(--gray-400);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+}
+
+.study-progress-badge {
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    padding: 0;
+    border-radius: 0;
+}
+
+.study-step-badge {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    opacity: 0.8;
+}
+
+/* ==========================================
+   LEARNING UNITS CONTAINER
+   ========================================== */
+.study-units-container {
+    border-radius: 12px;
+    border: 2px solid var(--gray-300);
+    padding: 1.25rem;
+    background: var(--gray-50);
+}
+
+/* ==========================================
+   SESSION SUMMARY CARD
+   ========================================== */
+.study-session-summary {
+    border-radius: 12px;
+    border-left: 4px solid var(--purple-400);
+    background: linear-gradient(135deg, var(--white) 0%, var(--purple-50) 100%);
+    padding: 1.5rem;
+}
+
+.study-summary-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.study-summary-row {
+    margin-bottom: 1rem;
+}
+
+.study-summary-row:last-child {
+    margin-bottom: 0;
+}
+
+.study-summary-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.study-summary-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.study-summary-badge.badge-info {
+    background: var(--blue-100);
+    color: var(--blue-700);
+}
+
+.study-summary-badge.badge-secondary {
+    background: var(--gray-200);
+    color: var(--gray-700);
+}
+
+/* ==========================================
+   SUMMARY STAT CARDS (for study_end page)
+   ========================================== */
+.study-summary-stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--white) 0%, var(--purple-50) 100%);
+    border-radius: 12px;
+    border-left: 4px solid var(--purple-400);
+    transition: all 0.3s ease;
+}
+
+.study-summary-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+}
+
+.study-summary-stat-icon {
+    font-size: 2.5rem;
+    color: var(--purple-500);
+    flex-shrink: 0;
+}
+
+.study-summary-stat-content {
+    flex: 1;
+}
+
+.study-summary-stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.study-summary-stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+/* ==========================================
+   MENTAL STATE CARDS - Enhanced Style
+   ========================================== */
+.study-mental-state-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 0.75rem;
+}
+
+.study-mental-state-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0.75rem;
+    border: 2px solid var(--gray-300);
+    border-radius: 10px;
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.study-mental-state-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--purple-400);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.study-mental-state-radio:checked + .study-mental-state-card {
+    background: linear-gradient(135deg, var(--white) 0%, var(--purple-50) 100%);
+    border-color: var(--purple-500);
+    border-width: 2px;
+    box-shadow: 0 3px 10px rgba(99, 102, 241, 0.2);
+}
+
+.study-mental-state-radio:checked + .study-mental-state-card:hover {
+    transform: translateY(-2px);
+}
+
+.study-mental-state-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.study-mental-state-label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+@media (max-width: 768px) {
+    .study-creation-label {
+        font-size: 1rem;
+    }
+
+    .study-btn-primary,
+    .study-btn-secondary,
+    .study-btn-cancel,
+    .study-btn-success {
+        min-width: 100%;
+        padding: 0.65rem 1.25rem;
+    }
+
+    .study-progress-step-icon {
+        font-size: 1.5rem;
+    }
+
+    .study-mental-state-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .study-mental-state-card {
+        padding: 1.25rem 0.75rem;
+    }
+
+    .study-mental-state-icon {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .study-session-summary {
+        padding: 1rem;
+    }
+
+    .study-summary-title {
+        font-size: 1rem;
+    }
+}
+

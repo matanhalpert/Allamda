@@ -1,0 +1,42 @@
+{% macro mental_state_selector(name, emotional_states, helper_text='Your answer helps us provide better support during the session.') %}
+<div class="mb-4">
+    <label class="form-label fw-bold">
+        <i class="fas fa-heart me-2"></i>How are you feeling right now?
+    </label>
+
+    <p class="text-muted small mb-3">
+        {{ helper_text }}
+    </p>
+    
+    <div class="row g-3">
+        {% for state in emotional_states %}
+        <div class="col-6 col-md-3">
+            <input 
+                type="radio" 
+                class="btn-check mental-state-radio" 
+                name="{{ name }}" 
+                id="state_{{ state.value }}" 
+                value="{{ state.value }}"
+                autocomplete="off"
+                required>
+            <label class="mental-state-card w-100 text-center py-3" for="state_{{ state.value }}">
+                {% if state.value == 'positive' %}
+                    <i class="fas fa-smile fa-2x d-block mb-2 text-success"></i>
+                    <span>Positive</span>
+                {% elif state.value == 'neutral' %}
+                    <i class="fas fa-meh fa-2x d-block mb-2 text-warning"></i>
+                    <span>Neutral</span>
+                {% elif state.value == 'negative' %}
+                    <i class="fas fa-frown fa-2x d-block mb-2 text-danger"></i>
+                    <span>Negative</span>
+                {% elif state.value == 'extreme' %}
+                    <i class="fas fa-tired fa-2x d-block mb-2 text-dark"></i>
+                    <span>Extreme</span>
+                {% endif %}
+            </label>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endmacro %}
+

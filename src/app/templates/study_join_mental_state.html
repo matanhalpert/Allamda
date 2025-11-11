@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% from "components/_mental_state_selector.html" import mental_state_selector %}
+
+{% block title %}Join School Session - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/study-session.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-school me-2"></i>Join School Study Session
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <!-- Session Info -->
+                <div class="alert alert-info mb-4">
+                    <h5 class="alert-heading">
+                        <i class="fas fa-info-circle me-2"></i>Your Session Details
+                    </h5>
+                    <p class="mb-2"><strong>Course:</strong> {{ course_name }}</p>
+                    <p class="mb-2"><strong>Session Type:</strong> {{ session_type }}</p>
+                    {% if learning_units %}
+                    <p class="mb-0"><strong>Learning Units:</strong></p>
+                    <ul class="mb-0 mt-2">
+                        {% for unit in learning_units %}
+                        <li>{{ unit }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+
+                <!-- Mental State Form -->
+                <form method="POST" action="{{ url_for('study.join_school_study_session_submit', session_id=session_id) }}">
+                    {{ mental_state_selector('emotional_state_before', emotional_states) }}
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex gap-2 mt-4 justify-content-center">
+                        <a href="{{ url_for('study.study_home') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>Join Session
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

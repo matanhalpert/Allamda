@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}Study Session - Allamda{% endblock %}
+
+{% block extra_head %}
+<link href="{{ url_for('static', filename='css/study-session.css') }}" rel="stylesheet">
+<!-- Markdown rendering libraries -->
+<script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+<!-- Socket.IO for real-time updates -->
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hidden user data for WebSocket -->
+<div data-user-id="{{ user.id }}" 
+     data-user-type="{{ user.user_type }}" 
+     style="display: none;"></div>
+
+<!-- Session Info Header -->
+<div class="session-info-banner">
+    <div class="session-banner-content">
+        <div class="session-main-info">
+            <div class="session-icon">
+                <i class="fas fa-book-reader"></i>
+            </div>
+            <div class="session-text">
+                <h4 class="session-title">
+                    {% if course %}{{ course.name }}{% else %}Study Session{% endif %}
+                </h4>
+                <p class="session-subtitle">
+                    <i class="fas fa-list-ul me-2"></i>
+                    {% if learning_units %}
+                        {% for unit in learning_units %}
+                            {{ unit.name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        Ready to learn
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="session-stats">
+            <div class="session-stat-item">
+                <span class="status-badge badge {% if status == 'active' %}status-active{% elif status == 'paused' %}status-paused{% else %}status-ended{% endif %}">
+                    <i class="fas fa-circle me-1"></i>
+                    <span id="statusText">{{ status.title() }}</span>
+                </span>
+            </div>
+            {% if is_school_session and remaining_seconds is not none %}
+            <div class="session-stat-item">
+                <div class="stat-icon-wrapper">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <span id="countdown-timer" class="stat-value" data-remaining="{{ remaining_seconds }}" data-session-id="{{ session_id }}">
+                    <span id="countdown-display">--:--</span>
+                </span>
+            </div>
+            {% endif %}
+            <div class="session-stat-item">
+                <div class="stat-icon-wrapper">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <span class="stat-value" id="duration">{{ duration_minutes }} min</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chat Interface -->
+<div class="chat-section">
+    <div class="chat-container-wrapper">
+        <div class="chat-header">
+            <div class="chat-header-content">
+                <div class="chat-title-wrapper">
+                    <div class="chat-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h5 class="chat-title">Chat with Your Teacher</h5>
+                </div>
+                <div class="chat-actions">
+                    {% if status == 'active' %}
+                    <button class="btn btn-control btn-warning" id="pauseResumeButton" onclick="pauseSession()">
+                        <i class="fas fa-pause me-1"></i>Pause
+                    </button>
+                    {% elif status == 'paused' %}
+                    <button class="btn btn-control btn-success" id="pauseResumeButton" onclick="resumeSession()">
+                        <i class="fas fa-play me-1"></i>Resume
+                    </button>
+                    {% endif %}
+                    <button class="btn btn-control btn-danger" onclick="endSession()">
+                        <i class="fas fa-stop me-1"></i>End
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="chat-body">
+            <!-- Chat Messages Container -->
+            <div id="chat-container">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="message {% if message.is_student %}student{% else %}teacher{% endif %}">
+                            <div>
+                                <div class="message-label">
+                                    {% if message.is_student %}
+                                        <i class="fas fa-user me-1"></i>You
+                                    {% else %}
+                                        <i class="fas fa-chalkboard-teacher me-1"></i>Teacher
+                                    {% endif %}
+                                </div>
+                                <div class="message-bubble {% if not message.is_student %}markdown-content{% endif %}">
+                                    {% if message.is_student %}
+                                        {{ message.content }}
+                                        <!-- Display attachments -->
+                                        {% if message.attachments %}
+                                            <div class="message-attachments mt-2">
+                                                {% for attachment in message.attachments %}
+                                                    {% if attachment.file_type == 'image' %}
+                                                        <div class="attachment-image">
+                                                            <a href="{{ attachment.url }}" target="_blank">
+                                                                <img src="{{ attachment.url }}" alt="Attached image" />
+                                                            </a>
+                                                        </div>
+                                                    {% else %}
+                                                        <a href="{{ attachment.url }}" target="_blank" class="attachment-file">
+                                                            <i class="fas fa-paperclip me-1"></i>
+                                                            {{ attachment.url.split('/')[-1].split('_', 1)[-1] }}
+                                                        </a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                        <div class="markdown-raw" style="display: none;">{{ message.content }}</div>
+                                        <div class="markdown-rendered"></div>
+                                    {% endif %}
+                                </div>
+                                {% if message.is_student %}
+                                <div class="message-time">
+                                    {{ message.timestamp }}
+                                </div>
+                                {% else %}
+                                <!-- Teacher message footer with timestamp and audio controls -->
+                                <div class="message-footer">
+                                    <div class="message-time">
+                                        {{ message.timestamp }}
+                                    </div>
+                                            <div class="message-audio-controls" data-message-id="{{ message.id }}">
+                                                <button class="audio-control-btn play-btn" title="Play audio">
+                                                    <i class="fas fa-play"></i>
+                                                </button>
+                                                <button class="audio-control-btn loading-btn" style="display: none;" title="Loading...">
+                                                    <i class="fas fa-spinner fa-spin"></i>
+                                                </button>
+                                                <button class="audio-control-btn pause-btn" style="display: none;" title="Pause audio">
+                                                    <i class="fas fa-pause"></i>
+                                                </button>
+                                                <button class="audio-control-btn stop-btn" title="Stop audio">
+                                                    <i class="fas fa-stop"></i>
+                                                </button>
+                                                <div class="audio-progress-bar">
+                                                    <div class="audio-progress-fill"></div>
+                                                </div>
+                                            </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-5" id="noMessagesPlaceholder">
+                            <i class="fas fa-comment-dots fa-3x mb-3"></i>
+                            <p>No messages yet. Start the conversation!</p>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Typing Indicator -->
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="message teacher">
+                            <div>
+                                <div class="message-label">
+                                    <i class="fas fa-chalkboard-teacher me-1"></i>Teacher
+                                </div>
+                                <div class="message-bubble">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- Message Input -->
+            <div class="chat-input-container">
+                <!-- File attachment preview area -->
+                <div id="attachmentPreview" class="attachment-preview" style="display: none;">
+                    <div class="attachment-list" id="attachmentList"></div>
+                </div>
+                
+                <div class="input-group-modern">
+                    <div class="input-tools">
+                        <!-- File attachment button -->
+                        <button 
+                            class="btn-tool" 
+                            type="button" 
+                            id="attachButton"
+                            onclick="document.getElementById('fileInput').click()"
+                            {% if status != 'active' %}disabled{% endif %}
+                            title="Attach file"
+                        >
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        
+                        <!-- Camera button (visual only - future feature) -->
+                        <button 
+                            class="btn-tool" 
+                            type="button" 
+                            id="cameraButton"
+                            onclick="return false;"
+                            {% if status != 'active' %}disabled{% endif %}
+                            title="Take photo"
+                        >
+                            <i class="fas fa-camera"></i>
+                        </button>
+                        
+                        <!-- Voice mode button -->
+                        <button 
+                            class="btn-tool" 
+                            type="button" 
+                            id="voiceButton"
+                            onclick="window.chat.toggleVoiceRecording()"
+                            {% if status != 'active' %}disabled{% endif %}
+                            title="Voice mode"
+                        >
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Hidden file input -->
+                    <input 
+                        type="file" 
+                        id="fileInput" 
+                        multiple 
+                        style="display: none;"
+                        accept=".png,.jpg,.jpeg,.gif,.webp,.pdf,.doc,.docx,.txt,.md,.xls,.xlsx,.csv,.ppt,.pptx"
+                        onchange="handleFileSelect(event)"
+                    />
+                    
+                    <textarea 
+                        class="message-input" 
+                        id="messageInput" 
+                        rows="2" 
+                        placeholder="Type your message here..."
+                        {% if status != 'active' %}disabled{% endif %}
+                    ></textarea>
+                    
+                    <button 
+                        class="btn-send" 
+                        id="sendButton" 
+                        onclick="sendMessage()"
+                        {% if status != 'active' %}disabled{% endif %}
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="input-hint">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Press Enter to send (Shift+Enter for new line) • Max 16MB per file
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Voice Recording Modal -->
+<div id="voiceRecordingModal" class="voice-recording-modal" style="display: none;">
+    <div class="voice-recording-overlay"></div>
+    <div class="voice-recording-content">
+        <div class="recording-header">
+            <h5><i class="fas fa-microphone me-2"></i>Recording...</h5>
+        </div>
+        
+        <div class="recording-body">
+            <!-- Timer Display -->
+            <div class="recording-timer" id="recordingTimer">00:00</div>
+            
+            <!-- Waveform Animation -->
+            <div class="waveform-container">
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+                <div class="waveform-bar"></div>
+            </div>
+            
+            <!-- Status Message -->
+            <p class="recording-status">Speak now...</p>
+        </div>
+        
+        <div class="recording-footer">
+            <button class="btn btn-danger" id="cancelRecordingBtn" onclick="window.chat.cancelVoiceRecording()">
+                <i class="fas fa-times me-1"></i>Cancel
+            </button>
+            <button class="btn btn-success" id="stopRecordingBtn" onclick="window.chat.stopVoiceRecording()">
+                <i class="fas fa-stop me-1"></i>Stop
+            </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Study Chat Modules - Load in dependency order -->
+<script src="{{ url_for('static', filename='js/study-chat/ui-helpers.js') }}"></script>
+<script src="{{ url_for('static', filename='js/study-chat/file-attachments.js') }}"></script>
+<script src="{{ url_for('static', filename='js/study-chat/audio-playback.js') }}"></script>
+<script src="{{ url_for('static', filename='js/study-chat/messaging.js') }}"></script>
+<script src="{{ url_for('static', filename='js/study-chat/session-controls.js') }}"></script>
+<script src="{{ url_for('static', filename='js/study-chat/voice-recording.js') }}"></script>
+<script src="{{ url_for('static', filename='js/study-chat/websocket.js') }}"></script>
+<script src="{{ url_for('static', filename='js/study-chat/main.js') }}"></script>
+
+<script>
+// Initialize chat with server-side variables
+const chat = new StudySessionChat({{ session_id }}, '{{ status }}');
+// Make globally accessible for template onclick handlers
+window.chat = chat;
+
+// Global functions for inline onclick handlers in template
+function sendMessage() { chat.sendMessage(); }
+function pauseSession() { chat.pauseSession(); }
+function resumeSession() { chat.resumeSession(); }
+function endSession() { chat.endSession(); }
+
+// Initialize countdown timer for school sessions
+initializeSchoolSessionTimer();
+</script>
+{% endblock %}
+
