@@ -1,5 +1,3 @@
-![λllamda](src/app/static/images/intro_logo.png)
-
 # λllamda
 
 **An AI-Driven Educational Platform Exploring Adaptive, Personalized Learning**
