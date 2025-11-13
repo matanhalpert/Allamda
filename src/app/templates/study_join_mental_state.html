@@ -1,58 +1,139 @@
 {% extends "base.html" %}
-{% from "components/_mental_state_selector.html" import mental_state_selector %}
 
 {% block title %}Join School Session - Allamda{% endblock %}
 
 {% block extra_head %}
-<link href="{{ url_for('static', filename='css/study-session.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/components.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/study-creation.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
 
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">
-                    <i class="fas fa-school me-2"></i>Join School Study Session
-                </h4>
-            </div>
-            <div class="card-body p-4">
-                <!-- Session Info -->
-                <div class="alert alert-info mb-4">
-                    <h5 class="alert-heading">
-                        <i class="fas fa-info-circle me-2"></i>Your Session Details
-                    </h5>
-                    <p class="mb-2"><strong>Course:</strong> {{ course_name }}</p>
-                    <p class="mb-2"><strong>Session Type:</strong> {{ session_type }}</p>
-                    {% if learning_units %}
-                    <p class="mb-0"><strong>Learning Units:</strong></p>
-                    <ul class="mb-0 mt-2">
-                        {% for unit in learning_units %}
-                        <li>{{ unit }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                </div>
-
-                <!-- Mental State Form -->
-                <form method="POST" action="{{ url_for('study.join_school_study_session_submit', session_id=session_id) }}">
-                    {{ mental_state_selector('emotional_state_before', emotional_states) }}
-
-                    <!-- Action Buttons -->
-                    <div class="d-flex gap-2 mt-4 justify-content-center">
-                        <a href="{{ url_for('study.study_home') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>Cancel
-                        </a>
-                        <button type="submit" class="btn btn-success btn-lg">
-                            <i class="fas fa-sign-in-alt me-2"></i>Join Session
-                        </button>
-                    </div>
-                </form>
-            </div>
+<!-- Page Header Banner -->
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <div class="welcome-text">
+            <h1 class="welcome-title">Join School Study Session</h1>
+            <p class="welcome-subtitle">
+                Review your session details and let us know how you're feeling
+            </p>
+        </div>
+        <div class="welcome-illustration">
+            <i class="fas fa-school"></i>
         </div>
     </div>
+</div>
+
+<!-- Main Dashboard Grid -->
+<div class="dashboard-grid">
+    
+    <!-- Session Summary Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.1s;">
+        <div class="section-header">
+            <h3>
+                <i class="fas fa-clipboard-check me-2"></i>Session Details
+            </h3>
+        </div>
+        
+        <div class="study-session-summary">
+            <h5 class="study-summary-title">
+                <i class="fas fa-check-circle me-2"></i>Your Session Configuration
+            </h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="study-summary-row">
+                        <div class="study-summary-label">Course:</div>
+                        <span class="study-summary-badge badge-info">
+                            {{ course_name }}
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="study-summary-row">
+                        <div class="study-summary-label">Session Type:</div>
+                        <span class="study-summary-badge badge-info">
+                            {{ session_type.replace('_', ' ').title() if session_type else 'N/A' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% if learning_units %}
+            <div class="study-summary-row">
+                <div class="study-summary-label">Learning Units:</div>
+                <div>
+                    {% for unit in learning_units %}
+                        <span class="study-summary-badge badge-info me-1 mb-1">{{ unit }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Mental State Selection Section -->
+    <div class="dashboard-section" style="grid-column: span 12; animation-delay: 0.15s;">
+        <form method="POST" action="{{ url_for('study.join_school_study_session_submit', session_id=session_id) }}">
+            <div class="mb-4">
+                <label class="form-label fw-bold study-creation-label">
+                    <i class="fas fa-heart me-2"></i>How are you feeling right now?
+                </label>
+
+                <p class="text-muted small mb-3">
+                    Your answer helps us provide better support during the session.
+                </p>
+                
+                <div class="study-mental-state-grid">
+                    {% for state in emotional_states %}
+                    <div>
+                        <input 
+                            type="radio" 
+                            class="btn-check study-mental-state-radio" 
+                            name="emotional_state_before" 
+                            id="state_{{ state.value }}" 
+                            value="{{ state.value }}"
+                            autocomplete="off"
+                            required>
+                        <label class="study-mental-state-card" for="state_{{ state.value }}">
+                            {% if state.value == 'positive' %}
+                                <div class="study-mental-state-icon text-success">
+                                    <i class="fas fa-smile"></i>
+                                </div>
+                                <span class="study-mental-state-label">Positive</span>
+                            {% elif state.value == 'neutral' %}
+                                <div class="study-mental-state-icon text-warning">
+                                    <i class="fas fa-meh"></i>
+                                </div>
+                                <span class="study-mental-state-label">Neutral</span>
+                            {% elif state.value == 'negative' %}
+                                <div class="study-mental-state-icon text-danger">
+                                    <i class="fas fa-frown"></i>
+                                </div>
+                                <span class="study-mental-state-label">Negative</span>
+                            {% elif state.value == 'extreme' %}
+                                <div class="study-mental-state-icon text-dark">
+                                    <i class="fas fa-tired"></i>
+                                </div>
+                                <span class="study-mental-state-label">Extreme</span>
+                            {% endif %}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="d-flex gap-3 mt-4 justify-content-center flex-wrap">
+                <a href="{{ url_for('study.study_home') }}" class="btn btn-lg study-btn-cancel">
+                    <i class="fas fa-times me-2"></i>Cancel
+                </a>
+                <button type="submit" class="btn btn-lg study-btn-success">
+                    <i class="fas fa-sign-in-alt me-2"></i>Join Session
+                </button>
+            </div>
+        </form>
+    </div>
+
 </div>
 
 {% endblock %}
