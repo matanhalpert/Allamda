@@ -22,7 +22,7 @@ Want to see how Allamda works? Check out the video showcase demonstrating the pl
 
 **[▶️ Watch the Project Demo on LinkedIn](https://www.linkedin.com/posts/matan-halpert_newproject-agenticai-agenticlearning-activity-7394810548519059456-RE2u?utm_source=share&utm_medium=member_desktop&rcm=ACoAADNJQHIBvWg0eN_n-lMvScI3U0aw9eiAPiI)**
 
-<i>The video walkthrough shows real interactions between students and AI Teacher Agents, the adaptive learning interface, and analytics dashboards.</i>
+<i>The video walkthrough shows real interactions between students and AI Teacher Agents, and analytics dashboards.</i>
 
 ---
 
